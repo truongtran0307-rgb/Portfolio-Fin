@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quang Truong — Portfolio 2026</title>
+<meta name="view-transition" content="same-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/home.css">
+
+<!-- Google Analytics (gtag.js) — đếm lượt truy cập, xem báo cáo tại analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWQNW1G6H2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VWQNW1G6H2');
+</script>
+
+<!-- Bật màn chờ NGAY từ <head>, trước khi trang kịp vẽ, để không thấy nội dung
+     nhấp nháy một nhịp rồi mới bị che. Máy chặn JS sẽ bỏ qua dòng này nên
+     không bao giờ bị kẹt ở màn chờ. -->
+<script>document.documentElement.classList.add('preloading');</script>
+
+<!-- Rê chuột vào link dự án -> trình duyệt âm thầm dựng sẵn trang đó.
+     Bấm vào là hiện ra tức thì. Trình duyệt không hỗ trợ thì bỏ qua. -->
+<script type="speculationrules">
+{
+  "prerender": [{
+    "where": { "selector_matches": ".tile-cta" },
+    "eagerness": "moderate"
+  }]
+}
+</script>
+</head>
+<body>
+
+<!-- Màn chờ: đếm theo số ảnh đã tải xong thật, không phải đồng hồ giả -->
+<div class="preloader" id="preloader" role="status" aria-live="polite">
+  <div class="pre-inner">
+    <div class="pre-label mono">LOADING REEL</div>
+    <div class="pre-num mono"><span id="preNum">000</span><small>%</small></div>
+    <div class="pre-bar"><i id="preBar"></i></div>
+    <div class="pre-meta mono"><span>PORTFOLIO 2026</span><span>T.Q.TRƯỜNG</span></div>
+  </div>
+</div>
+
+<!-- Bộ lọc tách kênh màu, dùng cho hiệu ứng lệch màu khi rê chuột vào thẻ dự án.
+     Cùng nguyên lý với shader WebGL nhưng không phải nạp thư viện nào. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="chR" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"/>
+  </filter>
+  <filter id="chC" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+  </filter>
+</svg>
+
+<div class="progress" id="progress"></div>
+<canvas id="trackCanvas"></canvas>
+<div class="grain"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div class="reg">
+  <div class="mark tl"><svg viewBox="0 0 26 26"><path d="M2 2 L2 12 M2 2 L12 2" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="2" cy="2" r="1.6" fill="currentColor"/></svg></div>
+  <div class="mark tr"><svg viewBox="0 0 26 26"><path d="M2 2 L2 12 M2 2 L12 2" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="2" cy="2" r="1.6" fill="currentColor"/></svg></div>
+  <div class="mark bl"><svg viewBox="0 0 26 26"><path d="M2 2 L2 12 M2 2 L12 2" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="2" cy="2" r="1.6" fill="currentColor"/></svg></div>
+  <div class="mark br"><svg viewBox="0 0 26 26"><path d="M2 2 L2 12 M2 2 L12 2" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="2" cy="2" r="1.6" fill="currentColor"/></svg></div>
+</div>
+<div class="edge-label left mono">PORTFOLIO 2026 — BRANDING / EVENT VISUAL / MOTION</div>
+<div class="edge-label right mono">SELECTION / 2026 — BY QUANG TRUONG</div>
+<div class="swatchbar">
+  <i style="background:#0A0A0A;border:1px solid #333"></i>
+  <i style="background:#D7F53A"></i>
+  <i style="background:#3FC6D6"></i>
+  <i style="background:#F2EFE4"></i>
+  <i style="background:#8A8471"></i>
+</div>
+
+<div class="topbar">
+  <div class="rec mono"><span class="rec-dot"></span>REC <span id="tc">00:00:00:00</span></div>
+  <div class="brand grot">T.Q.TRƯỜNG</div>
+  <div class="mono" id="clock">HCMC — --:--</div>
+</div>
+
+<div class="tabs wrap">
+  <button class="tab-btn active" data-page="design" type="button">
+    <span class="tab-idx mono">01</span>
+    <span class="tab-txt">WORK<small>Selection / 2026</small></span>
+  </button>
+  <button class="tab-btn" data-page="promoter" type="button">
+    <span class="tab-idx mono">02</span>
+    <span class="tab-txt">PROMOTER<small>FPT University</small></span>
+  </button>
+</div>
+
+<div id="page-design">
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+  </div>
+</div>
+
+<section class="hero wrap">
+  <div class="hero-meta mono">
+    <span>PORTFOLIO <b>2026</b></span>
+    <span>BRANDING / EVENT VISUAL / MOTION</span>
+    <span>SELECTION / 2026</span>
+  </div>
+
+  <div class="hero-panel" data-fx="hero" data-fx-mode="exit">
+    <div class="corner-tick a">PT-01</div>
+    <div class="corner-tick b">© 2026</div>
+    <h1>Port<br>folio 2026</h1>
+    <div class="role grot">By Quang Truong — Designer &amp; Creative Marketer</div>
+    <p class="sub">I blend visual storytelling, digital design, and creative marketing into compelling brand experiences.</p>
+  </div>
+
+  <div class="hero-foot">
+    <div class="hero-tags">
+      <span>ILLUSTRATOR</span><span>PHOTOSHOP</span><span>AFTER EFFECTS</span><span>FIGMA</span>
+    </div>
+    <div class="qr-block">
+      <img src="assets/img/hero/qr_behance.png" alt="QR Behance">
+      <div class="qr-txt">SCAN →<br><b>BEHANCE PORTFOLIO</b><br>/254056325</div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker flip">
+  <div class="ticker-track">
+    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+  </div>
+</div>
+
+<section class="plate" id="about">
+  <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="wrap">
+    <div class="plate-head reveal">
+      <div class="tag">01 / ABOUT</div>
+      <h2 data-fx="drift">About</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm <b>Quang Truong</b>, a multidisciplinary designer and creative marketer exploring the intersection of UI/UX, digital illustration, and event experiences.</p>
+        <p>Based in Vietnam, my journey is shaped by a balance of technical structure and artistic exploration — from designing interactive user interfaces to character concepts.</p>
+        <p>I work across UI/UX design, digital painting, character design, and educational marketing. Influenced by dynamic eSports visuals, immersive storytelling, and disciplined execution, my goal is to create visual systems that are strategically clear, highly functional, and emotionally engaging.</p>
+        <p><b>I love bold visual concepts, rich textures, character storytelling, and challenges that push creative boundaries.</b></p>
+
+        <div class="portrait-box">
+          <div class="portrait-frame" data-fx="portrait">
+            <div class="ruler-v"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <img src="assets/img/hero/portrait.jpg" alt="Quang Truong">
+          </div>
+          <div class="portrait-cap mono"><span>QUANG TRUONG</span><span>BW / 5×4</span></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="fact-list">
+          <div class="fact"><div class="k">Education</div><div class="v">FPT University<br><span style="opacity:.6;font-weight:500">Graphic Design and Digital Art</span></div></div>
+          <div class="fact"><div class="k">Freelancer</div><div class="v">Graphic Design &amp; Digital Art<br><span style="opacity:.6;font-weight:500">present</span></div></div>
+          <div class="fact"><div class="k">FPT University</div><div class="v">Admissions Officer<br><span style="opacity:.6;font-weight:500">2023 — present · Full-time Collaborator</span></div></div>
+          <div class="fact"><div class="k">Based in</div><div class="v">Vietnam</div></div>
+          <div class="fact"><div class="k">Email</div><div class="v"><a href="mailto:truongtran0307@gmail.com">truongtran0307@gmail.com</a></div></div>
+          <div class="fact"><div class="k">Phone</div><div class="v"><a href="tel:+84905053957">+84 905 053 957</a></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plate plate--wide" id="work">
+  <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="wrap wrap--wide">
+    <div class="plate-head reveal">
+      <div class="tag">02 / SELECTED WORK</div>
+      <h2 data-fx="drift">Projects</h2>
+    </div>
+    <div class="dotgrid reveal" data-fx="grid">
+      <div class="reel-strip" id="reel-strip"></div>
+    </div>
+  </div>
+</section>
+
+<section class="plate" id="experience">
+  <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="wrap">
+    <div class="plate-head reveal">
+      <div class="tag">03 / EXPERIENCE</div>
+      <h2 data-fx="drift">Experience</h2>
+    </div>
+    <div class="reveal">
+      <div class="tl-row">
+        <div class="tl-when mono">PRESENT</div>
+        <div>
+          <div class="tl-role">Freelancer</div>
+          <div class="tl-org">Graphic Design and Digital Art</div>
+          <div class="tl-desc"><p>Brand identity, packaging, key visual and illustration work for independent clients — from logo construction through to print-ready artwork.</p></div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when mono">2023 — PRESENT</div>
+        <div>
+          <div class="tl-role">Admissions Officer</div>
+          <div class="tl-org">FPT University — Full-time Collaborator</div>
+          <div class="tl-desc">
+            <p><b>Event visual design:</b> key visuals, backdrops, banners and standees for seminars, seasonal campaigns and award ceremonies.</p>
+            <p><b>Event coordination:</b> logistics planning, venue setup and on-site run-through to keep programmes on schedule.</p>
+            <p><b>Admissions communication:</b> advising thousands of high-school students and parents on programmes and career pathways.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when mono">EDUCATION</div>
+        <div>
+          <div class="tl-role">FPT University</div>
+          <div class="tl-org">Graphic Design and Digital Art</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plate" id="skills">
+  <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+  <div class="wrap">
+    <div class="plate-head reveal">
+      <div class="tag">04 / SKILLS</div>
+      <h2 data-fx="drift">Technical skill</h2>
+    </div>
+    <div class="skill-grid reveal">
+      <div class="skill-col">
+        <h3>Design</h3>
+        <ul><li>Brand identity &amp; logo</li><li>Packaging design</li><li>Event key visual</li><li>Editorial &amp; layout</li><li>UI/UX design</li><li>Character design</li></ul>
+      </div>
+      <div class="skill-col">
+        <h3>Software</h3>
+        <!-- Thẻ phần mềm 3D: mặt trước là icon, lật lại là công việc dùng nó -->
+        <div class="app-deck">
+          <div class="app-card" style="--d:0">
+            <div class="app-inner">
+              <div class="app-face app-front">
+                <img class="app-mark" src="assets/img/skills/ai.png" width="220" height="220" alt="">
+                <span class="app-name">Illustrator</span>
+              </div>
+              <div class="app-face app-back"><span>Logo, packaging<br>&amp; vector artwork</span></div>
+            </div>
+          </div>
+          <div class="app-card" style="--d:1">
+            <div class="app-inner">
+              <div class="app-face app-front">
+                <img class="app-mark" src="assets/img/skills/ps.png" width="220" height="220" alt="">
+                <span class="app-name">Photoshop</span>
+              </div>
+              <div class="app-face app-back"><span>Key visual,<br>retouch &amp; matte</span></div>
+            </div>
+          </div>
+          <div class="app-card" style="--d:2">
+            <div class="app-inner">
+              <div class="app-face app-front">
+                <img class="app-mark" src="assets/img/skills/ae.png" width="220" height="220" alt="">
+                <span class="app-name">After Effects</span>
+              </div>
+              <div class="app-face app-back"><span>Motion graphics<br>&amp; compositing</span></div>
+            </div>
+          </div>
+          <div class="app-card" style="--d:3">
+            <div class="app-inner">
+              <div class="app-face app-front">
+                <img class="app-mark" src="assets/img/skills/figma.png" width="220" height="220" alt="">
+                <span class="app-name">Figma</span>
+              </div>
+              <div class="app-face app-back"><span>UI layout<br>&amp; design systems</span></div>
+            </div>
+          </div>
+          <div class="app-card" style="--d:4">
+            <div class="app-inner">
+              <div class="app-face app-front">
+                <span class="app-mono mono">Pr</span>
+                <span class="app-name">Premiere Pro</span>
+              </div>
+              <div class="app-face app-back"><span>Edit, grade<br>&amp; sound sync</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="skill-col">
+        <h3>Craft</h3>
+        <ul><li>Digital painting</li><li>Vector illustration</li><li>Visual development</li><li>Storyboard &amp; animatic</li><li>Motion graphics</li><li>Creative marketing</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plate contact" id="contact">
+  <div class="wrap">
+    <div class="contact-inner reveal">
+      <div class="tag mono">05 / CONTACT</div>
+      <h2>Thanks for<br>watching!</h2>
+      <div class="contact-links">
+        <a class="bracket" href="mailto:truongtran0307@gmail.com">✉ truongtran0307@gmail.com</a>
+        <a class="bracket" href="tel:+84905053957">☎ +84 905 053 957</a>
+        <a class="bracket" href="https://www.behance.net/gallery/254056325/Portfolio-2026" target="_blank">◈ BEHANCE ↗</a>
+      </div>
+      <div class="contact-qr"><span class="qr-wrap"><img src="assets/img/hero/qr_behance.png" alt="QR Behance"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>© 2026 QUANG TRUONG</span><span>SEE YOU SOON</span><span>PORTFOLIO 2026</span>
+    <span>© 2026 QUANG TRUONG</span><span>SEE YOU SOON</span><span>PORTFOLIO 2026</span>
+  </div>
+</div>
+
+<footer>
+  <span>QUANG TRUONG / PORTFOLIO 2026</span>
+  <span>SEE YOU SOON</span>
+</footer>
+
+</div><!-- /#page-design -->
+
+<div id="page-promoter" hidden>
+
+  <section class="plate soon-plate">
+    <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+    <div class="wrap">
+      <div class="plate-head reveal in">
+        <div class="tag">06 / PROMOTER</div>
+        <h2>Promoter at FPT</h2>
+      </div>
+
+      <div class="soon-body reveal in">
+        <div class="soon-badge mono"><span class="rec-dot"></span>IN PROGRESS</div>
+        <div class="soon-title">COMING<br>SOON</div>
+        <p class="soon-desc">Promoter work at FPT University is being compiled — photos, video and event figures will be published here soon.</p>
+        <div class="soon-meta mono">STATUS: IN&nbsp;PROGRESS &nbsp;·&nbsp; ETA: TBA &nbsp;·&nbsp; SECTION 06</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>PROMOTER AT FPT</span><span>COMING SOON</span><span>IN PROGRESS</span>
+      <span>PROMOTER AT FPT</span><span>COMING SOON</span><span>IN PROGRESS</span>
+    </div>
+  </div>
+
+  <footer>
+    <span>QUANG TRUONG / PROMOTER</span>
+    <span>SEE YOU SOON</span>
+  </footer>
+
+</div><!-- /#page-promoter -->
+
+<script src="assets/js/projects-data.js"></script>
+<script>
+  // Sinh tile dự án trực tiếp từ PROJECTS (projects-data.js) —
+  // thêm/sửa dự án chỉ cần sửa 1 chỗ duy nhất, không phải đụng vào index.html.
+  const reelStrip = document.getElementById('reel-strip');
+  reelStrip.innerHTML = PROJECTS.map((p, i) => `
+    <div class="tile" data-slug="${p.slug}">
+      <div class="tile-img">
+        <img class="tile-base" src="assets/img/tiles/${p.slug}.jpg" alt="${p.title}">
+        <!-- Hai bản sao cùng file ảnh (trình duyệt dùng lại bản đã tải, không
+             tốn thêm lượt tải). Khi rê chuột, mỗi bản chỉ giữ một dải màu rồi
+             lệch đi vài pixel -> viền màu như tín hiệu video bị nhiễu. -->
+        <img class="tile-ghost g-r" src="assets/img/tiles/${p.slug}.jpg" alt="" aria-hidden="true">
+        <img class="tile-ghost g-c" src="assets/img/tiles/${p.slug}.jpg" alt="" aria-hidden="true">
+        <i class="tile-scan" aria-hidden="true"></i>
+        <div class="tile-tick tl"></div><div class="tile-tick br"></div>
+        <div class="tile-num mono">${p.reel} · ${p.year}</div>
+      </div>
+      <div class="tile-body">
+        <div>
+          <div class="tile-kind mono">${p.kind}</div>
+          <div class="tile-title">${p.title}</div>
+          <div class="tile-desc">${p.sub}</div>
+        </div>
+        <a class="tile-cta bracket" href="project.html?p=${p.slug}">View project</a>
+      </div>
+    </div>
+  `).join('');
+</script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/home.js"></script>
+
+</body>
+</html>

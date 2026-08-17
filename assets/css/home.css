@@ -1,0 +1,454 @@
+/* ============================================================
+   HOME.CSS — Riêng cho index.html (trang chính / showreel)
+   Nạp SAU base.css.
+   ============================================================ */
+
+.wrap{ max-width:1280px; margin:0 auto; padding:0 64px; position:relative; }
+@media (max-width:820px){ .wrap{ padding:0 22px; } }
+
+/* Khối Projects cần rộng hơn để đủ chỗ cho 4 thẻ dự án mà không bị cắt */
+.wrap--wide{ max-width:1660px; }
+.plate--wide .plate-frame{ inset:34px 40px; }
+@media (max-width:820px){ .plate--wide .plate-frame{ inset:22px 22px; } }
+
+/* ============ FIXED PRINT REGISTRATION SYSTEM ============ */
+.reg{ position:fixed; inset:0; pointer-events:none; z-index:80; }
+.reg .mark{ position:absolute; width:26px; height:26px; color:var(--acid); }
+.reg .mark svg{ width:100%; height:100%; display:block; }
+.reg .mark.tl{ top:14px; left:14px; }
+.reg .mark.tr{ top:14px; right:14px; transform:scaleX(-1); }
+.reg .mark.bl{ bottom:14px; left:14px; transform:scaleY(-1); }
+.reg .mark.br{ bottom:14px; right:14px; transform:scale(-1,-1); }
+
+.edge-label{
+  position:fixed; top:50%; z-index:79;
+  font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:10.5px; letter-spacing:.18em;
+  color:var(--muted); white-space:nowrap; pointer-events:none;
+}
+.edge-label.left{ left:22px; transform:translateY(-50%) rotate(-90deg); transform-origin:left center; }
+.edge-label.right{ right:22px; transform:translateY(-50%) rotate(90deg); transform-origin:right center; }
+@media (max-width:820px){ .edge-label{ display:none; } }
+
+.swatchbar{ position:fixed; right:26px; bottom:90px; z-index:79; display:flex; flex-direction:column-reverse; gap:3px; }
+.swatchbar i{ width:9px; height:9px; display:block; }
+@media (max-width:820px){ .swatchbar{ display:none; } }
+
+/* ============ TICKER ============ */
+.ticker{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); overflow:hidden; background:var(--paper-2); }
+.ticker-track{ display:flex; white-space:nowrap; width:max-content; animation:tick 22s linear infinite; }
+@media (prefers-reduced-motion: reduce){ .ticker-track{ animation-duration:70s; } }
+.ticker-track span{
+  font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  padding:11px 22px; display:flex; align-items:center; gap:16px; color:var(--muted);
+}
+.ticker-track span b{ color:var(--acid); font-weight:500; }
+.ticker-track span::after{ content:"×"; color:var(--acid); }
+@keyframes tick{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+.ticker.flip{ transform:rotate(180deg); }
+.ticker:hover .ticker-track{ animation-play-state:paused; }
+
+/* ============ TOP BAR ============ */
+.topbar{ position:relative; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:20px 64px; }
+@media (max-width:820px){ .topbar{ padding:18px 22px; } }
+.topbar .mono{ font-size:11px; letter-spacing:.06em; color:var(--muted); }
+.topbar .brand{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:14px; letter-spacing:.02em; }
+.rec{ display:flex; align-items:center; gap:8px; }
+.rec-dot{ width:6px; height:6px; border-radius:50%; background:var(--acid); animation:blink 1.5s steps(2,jump-none) infinite; }
+@keyframes blink{ 50%{ opacity:.15; } }
+
+/* ============ HERO ============ */
+.hero{ position:relative; padding:34px 0 60px; }
+.hero-meta{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:11px; color:var(--muted);
+  letter-spacing:.06em; margin-bottom:30px; flex-wrap:wrap; gap:10px;
+}
+.hero-meta span b{ color:var(--acid); font-weight:500; }
+
+.hero-panel{
+  position:relative; background:var(--acid); color:var(--paper);
+  padding:56px 48px 68px; overflow:hidden;
+  clip-path: polygon(0% 0%, 78% 0%, 78% 12%, 100% 12%, 100% 100%, 22% 100%, 22% 88%, 0% 88%);
+}
+
+/* Vệt sáng quét chéo chậm qua panel — thay cho tilt theo chuột */
+.hero-panel::after{
+  content:""; position:absolute; inset:-40%; pointer-events:none;
+  background:linear-gradient(105deg, transparent 42%, rgba(255,255,255,.55) 50%, transparent 58%);
+  animation:heroSheen 7s ease-in-out infinite;
+}
+@keyframes heroSheen{
+  0%, 65%{ transform:translateX(-70%); }
+  100%{ transform:translateX(70%); }
+}
+
+/* Cuộn qua hero: panel lùi lại và mờ dần, nhường chỗ cho phần dưới.
+   Dùng biến --p từ initScrollFX() để chạy được cả trên Safari/Firefox. */
+[data-fx="hero"]{
+  transform:translate3d(0, calc(var(--p) * -46px), 0) scale(calc(1 - var(--p) * .04));
+  opacity:calc(1 - var(--p) * .45);
+  will-change:transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce){ .hero-panel::after{ animation:none; opacity:0; } }
+@media (max-width:820px){
+  .hero-panel{ padding:36px 22px 54px; clip-path: polygon(0% 0%, 85% 0%, 85% 8%, 100% 8%, 100% 100%, 15% 100%, 15% 92%, 0% 92%); }
+}
+.hero-panel .corner-tick{ position:absolute; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.05em; opacity:.65; }
+.hero-panel .corner-tick.a{ top:14px; left:14px; }
+.hero-panel .corner-tick.b{ bottom:14px; right:14px; }
+
+.hero-panel h1{ position:relative; z-index:2; font-weight:900; text-transform:uppercase; font-size:clamp(44px, 9vw, 118px); line-height:.92; letter-spacing:-.01em; }
+.hero-panel .role{ position:relative; z-index:2; margin-top:22px; font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:clamp(15px,2vw,20px); text-transform:uppercase; letter-spacing:.02em; }
+.hero-panel .sub{ position:relative; z-index:2; margin-top:16px; max-width:520px; font-size:15px; line-height:1.6; font-weight:500; opacity:.85; }
+.hero-panel .corner-tick{ z-index:2; }
+
+.hero-foot{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px; margin-top:34px; }
+.hero-tags{ display:flex; flex-wrap:wrap; gap:8px; max-width:640px; }
+.hero-tags span{
+  font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.03em;
+  border:1px solid var(--line-strong); padding:6px 11px; color:var(--muted);
+  opacity:0; animation:tagIn .5s ease forwards;
+}
+.hero-tags span:nth-child(1){ animation-delay:1.0s; } .hero-tags span:nth-child(2){ animation-delay:1.08s; }
+.hero-tags span:nth-child(3){ animation-delay:1.16s; } .hero-tags span:nth-child(4){ animation-delay:1.24s; }
+@keyframes tagIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
+
+.qr-block{ display:flex; align-items:center; gap:12px; }
+.qr-block img{ width:66px; height:66px; image-rendering:pixelated; border:1px solid var(--line-strong); }
+.qr-block .qr-txt{ font-family:'JetBrains Mono', monospace; font-size:10px; line-height:1.7; color:var(--muted); letter-spacing:.04em; }
+.qr-block .qr-txt b{ color:var(--acid); display:block; font-size:11px; }
+
+/* ============ PLATE (section) ============ */
+.plate{ position:relative; padding:96px 0; border-bottom:1px solid var(--line); }
+.plate-frame{ position:absolute; inset:34px 64px; border:1px solid var(--line); pointer-events:none; }
+@media (max-width:820px){ .plate-frame{ inset:22px 22px; } }
+.plate-frame i{ position:absolute; width:11px; height:11px; opacity:0; transition:opacity .5s ease; }
+.plate-frame i::before, .plate-frame i::after{ content:""; position:absolute; background:var(--acid); }
+.plate-frame i::before{ width:11px; height:1px; top:0; left:0; }
+.plate-frame i::after{ width:1px; height:11px; top:0; left:0; }
+.plate-frame i.tl{ top:-1px; left:-1px; transition-delay:0s; }
+.plate-frame i.tr{ top:-1px; right:-1px; transform:scaleX(-1); transition-delay:.09s; }
+.plate-frame i.bl{ bottom:-1px; left:-1px; transform:scaleY(-1); transition-delay:.27s; }
+.plate-frame i.br{ bottom:-1px; right:-1px; transform:scale(-1,-1); transition-delay:.18s; }
+.plate.plate-in .plate-frame i{ opacity:1; }
+
+.plate-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:52px; flex-wrap:wrap; gap:16px; }
+.plate-head .tag{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:11px; letter-spacing:.1em; color:var(--acid); text-transform:uppercase; }
+.plate-head h2{ font-weight:800; font-size:clamp(28px,4vw,44px); letter-spacing:-.01em; text-transform:uppercase; }
+
+/* ---- LỚP HIỆU ỨNG THEO CUỘN TRANG -------------------------------------
+   Biến --p (0 → 1) do initScrollFX() trong home.js cập nhật mỗi khung hình:
+   p = 0 khi phần tử vừa chạm mép dưới màn hình, p = 1 khi vừa rời mép trên.
+   Dùng JS thay cho animation-timeline:view() vì thuộc tính đó hiện chỉ
+   Chrome chạy — Safari và Firefox bỏ qua, coi như không có hiệu ứng.     */
+[data-fx]{ --p:.5; }
+[data-fx-mode="exit"]{ --p:0; }   /* hero: đứng yên lúc mới tải trang */
+
+/* Tiêu đề mục trôi ngược chiều cuộn -> tách khỏi nền, tạo chiều sâu */
+[data-fx="drift"]{
+  transform:translate3d(0, calc((.5 - var(--p)) * 60px), 0);
+  will-change:transform;
+}
+/* Lưới chấm sau khối Projects trôi chậm hơn ảnh -> lớp nền lùi ra sau */
+[data-fx="grid"]{ background-position:0 calc((var(--p) - .5) * 52px); }
+
+/* Ảnh chân dung dịch nhẹ trong khung -> khung đứng yên, ảnh sống */
+[data-fx="portrait"] img{
+  transform:translate3d(0, calc((.5 - var(--p)) * 26px), 0) scale(1.09);
+  will-change:transform;
+}
+
+/* ============ ABOUT ============ */
+.about-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:64px; }
+@media (max-width:900px){ .about-grid{ grid-template-columns:1fr; gap:40px; } }
+.about-text p{ font-size:17px; line-height:1.75; color:var(--off); opacity:.88; }
+.about-text p + p{ margin-top:16px; }
+.about-text b{ color:var(--acid); font-weight:700; }
+
+.portrait-box{ position:relative; margin-top:32px; border:1px solid var(--line-strong); padding:14px; }
+.portrait-frame{ position:relative; aspect-ratio:5/4; overflow:hidden; background:var(--paper-2); }
+/* Ảnh chân dung để MÀU (không grayscale), chỉ tinh chỉnh nhẹ cho khớp tông web */
+.portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:50% 28%; filter:contrast(1.04) saturate(1.05); }
+.ruler-v{ position:absolute; left:-14px; top:0; bottom:0; width:14px; display:flex; flex-direction:column; justify-content:space-between; }
+.ruler-v span{ width:6px; height:1px; background:var(--line-strong); }
+.portrait-cap{ margin-top:10px; display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--muted); letter-spacing:.04em; }
+
+.fact-list{ margin-top:0; }
+.fact{
+  padding:16px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; align-items:baseline;
+  opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s cubic-bezier(.16,.8,.24,1);
+}
+.fact:first-child{ padding-top:0; }
+.fact:nth-child(1){ transition-delay:.05s; } .fact:nth-child(2){ transition-delay:.12s; }
+.fact:nth-child(3){ transition-delay:.19s; } .fact:nth-child(4){ transition-delay:.26s; }
+.fact:nth-child(5){ transition-delay:.33s; } .fact:nth-child(6){ transition-delay:.4s; }
+.reveal.in .fact{ opacity:1; transform:translateY(0); }
+.fact .k{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:10.5px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase; white-space:nowrap; }
+.fact .v{ font-size:15px; font-weight:600; text-align:right; }
+.fact .v a:hover{ color:var(--acid); }
+
+/* ============ WORK / SHOWREEL ============ */
+.dotgrid{ background-image:radial-gradient(var(--line-strong) 1px, transparent 1px); background-size:16px 16px; padding:28px; margin:0 -28px; }
+.reel-strip{
+  display:flex; gap:18px; overflow-x:auto; padding-bottom:10px;
+  scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
+  perspective:1400px; perspective-origin:50% 42%;   /* không gian 3D cho thẻ dự án */
+}
+.reel-strip::-webkit-scrollbar{ height:5px; }
+.reel-strip::-webkit-scrollbar-thumb{ background:var(--line-strong); }
+
+.tile{
+  position:relative; flex:0 0 340px; scroll-snap-align:start;
+  background:var(--paper); border:1px solid var(--line-strong);
+  padding:0; overflow:hidden; display:flex; flex-direction:column;
+  transition:border-color .4s ease, transform .45s cubic-bezier(.16,.8,.24,1); cursor:pointer;
+}
+@media (max-width:520px){ .tile{ flex:0 0 78vw; } }
+
+/* Cuộn tới: từng thẻ dựng lên từ chiều sâu và "bắt nét" — mô phỏng cú
+   rack focus của máy quay, ăn với ngôn ngữ REC/timecode của trang.
+   Hiệu ứng chạy theo CUỘN TRANG, không phải nghiêng theo chuột. */
+.dotgrid .tile{
+  opacity:0; filter:blur(7px);
+  transform:perspective(1400px) rotateX(16deg) translate3d(0,48px,-110px);
+  transition:opacity .75s ease, filter .75s ease,
+             transform .85s cubic-bezier(.16,.8,.24,1), border-color .4s ease;
+}
+.dotgrid.in .tile{ opacity:1; filter:blur(0); transform:perspective(1400px) rotateX(0) translate3d(0,0,0); }
+.dotgrid.in .tile:nth-child(1){ transition-delay:.05s; } .dotgrid.in .tile:nth-child(2){ transition-delay:.15s; }
+.dotgrid.in .tile:nth-child(3){ transition-delay:.25s; } .dotgrid.in .tile:nth-child(4){ transition-delay:.35s; }
+.dotgrid.in .tile:nth-child(5){ transition-delay:.45s; } .dotgrid.in .tile:nth-child(6){ transition-delay:.55s; }
+
+/* Hover: nâng thẳng lên + đẩy tới gần, không nghiêng theo chuột */
+.dotgrid.in .tile:hover{ transform:perspective(1400px) translate3d(0,-10px,44px); border-color:var(--acid); box-shadow:0 24px 60px rgba(0,0,0,.55); }
+.tile-img{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--paper-2); }
+.tile-img img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:grayscale(30%) contrast(1.05) brightness(.96); transition:filter .5s ease, transform .6s cubic-bezier(.16,.8,.24,1); opacity:0; animation:imgIn .6s ease forwards; }
+@keyframes imgIn{ to{ opacity:1; } }
+.tile:hover .tile-img img{ filter:grayscale(0%) contrast(1.05) brightness(1); transform:scale(1.06); }
+.tile-img::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,.85) 100%); }
+
+/* ---- LỆCH MÀU KHI RÊ CHUỘT ------------------------------------------------
+   Hai bản sao của ảnh, mỗi bản bị bộ lọc SVG lọc chỉ còn một dải màu (đỏ /
+   lục-lam), rồi lệch ngược hướng nhau vài pixel. Chồng lên nhau bằng chế độ
+   hoà trộn screen -> ra viền màu ở mép vật thể, đúng kiểu tín hiệu video lệch
+   kênh. Đây là cách WebGL hay làm, nhưng ở đây chỉ tốn CSS, không nạp thư viện.
+   isolation:isolate giữ phần hoà trộn nằm gọn trong khung ảnh.               */
+.tile-img{ isolation:isolate; }
+.tile-ghost{
+  position:absolute; inset:0; z-index:1;
+  opacity:0; animation:none !important; mix-blend-mode:screen;
+  pointer-events:none;
+  transition:opacity .28s ease, transform .28s cubic-bezier(.16,.8,.24,1);
+}
+/* Viết kèm .tile để thắng độ ưu tiên của ".tile:hover .tile-img img" phía trên —
+   nếu không, lúc rê chuột bộ lọc grayscale sẽ ghi đè và mất hẳn hiệu ứng. */
+.tile .tile-ghost.g-r{ filter:url(#chR); }
+.tile .tile-ghost.g-c{ filter:url(#chC); }
+
+/* Vệt quét chạy dọc khung ảnh — nhịp còn lại của ngôn ngữ REC trên trang */
+.tile-scan{
+  position:absolute; left:0; right:0; height:2px; top:-6%; z-index:2;
+  background:linear-gradient(90deg, transparent, var(--off), transparent);
+  opacity:0; pointer-events:none;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .tile:hover .tile-ghost{ opacity:.5; }
+  .tile:hover .tile-ghost.g-r{ transform:translate3d(-5px,0,0) scale(1.06); }
+  .tile:hover .tile-ghost.g-c{ transform:translate3d(5px,0,0) scale(1.06); }
+  .tile:hover .tile-scan{ opacity:.55; animation:tileScan 1.15s linear infinite; }
+}
+@keyframes tileScan{ from{ top:-6%; } to{ top:104%; } }
+
+@media (prefers-reduced-motion: reduce){
+  .tile-ghost, .tile-scan{ display:none; }
+}
+.tile-body{ padding:16px 18px 20px; flex:1; display:flex; flex-direction:column; justify-content:space-between; transition:background .5s cubic-bezier(.16,.8,.24,1); }
+.tile:hover .tile-body{ background:var(--acid); }
+.tile:hover .tile-body, .tile:hover .tile-desc, .tile:hover .tile-cta{ color:var(--paper); }
+.tile-tick{ position:absolute; width:9px; height:9px; opacity:.85; color:var(--acid); z-index:2; }
+.tile-tick::before, .tile-tick::after{ content:""; position:absolute; background:currentColor; }
+.tile-tick::before{ width:9px; height:1px; }
+.tile-tick::after{ width:1px; height:9px; }
+.tile-tick.tl{ top:8px; left:8px; }
+.tile-tick.br{ bottom:8px; right:8px; }
+.tile-num{ position:absolute; left:10px; bottom:9px; z-index:2; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.05em; color:var(--off); }
+.tile-kind{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--acid); margin-bottom:8px; transition:color .4s ease; }
+.tile:hover .tile-kind{ color:var(--paper); opacity:.7; }
+.tile-title{ font-size:19px; font-weight:800; line-height:1.2; text-transform:uppercase; }
+.tile-desc{ font-size:12.5px; line-height:1.5; margin-top:10px; color:var(--muted); transition:color .4s ease; }
+.tile-cta{
+  margin-top:14px; font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:7px; color:var(--off); transition:color .4s ease; position:relative; z-index:2;
+}
+.tile-cta::after{ content:"↗"; }
+.tile::before{
+  content:""; position:absolute; left:0; right:0; height:2px; top:-10%; z-index:3;
+  background:linear-gradient(90deg, transparent, var(--off), transparent);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.tile:hover::before{ opacity:.55; animation:scan 1.15s linear infinite; }
+@keyframes scan{ from{ top:-8%; } to{ top:106%; } }
+
+/* ============ EXPERIENCE ============ */
+.tl-row{ display:grid; grid-template-columns:150px 1fr; gap:24px; padding:28px 0; border-top:1px solid var(--line); }
+.tl-row:last-child{ border-bottom:1px solid var(--line); }
+.tl-when{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:12.5px; color:var(--acid); padding-top:3px; }
+.tl-role{ font-size:20px; font-weight:800; text-transform:uppercase; }
+.tl-org{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:11px; color:var(--muted); margin-top:5px; letter-spacing:.03em; text-transform:uppercase; }
+.tl-desc{ margin-top:12px; font-size:14.5px; line-height:1.65; color:var(--off); opacity:.85; max-width:660px; }
+.tl-desc p + p{ margin-top:8px; }
+.tl-desc b{ color:var(--acid); font-weight:700; }
+@media (max-width:640px){ .tl-row{ grid-template-columns:1fr; gap:6px; } }
+
+/* ============ SKILLS ============ */
+.skill-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+@media (max-width:780px){ .skill-grid{ grid-template-columns:1fr; } }
+
+/* ---- Thẻ phần mềm 3D ----------------------------------------------------
+   Icon dùng file PNG người dùng gửi, đặt qua CSS mask nên tô được bằng
+   biến màu của web (chữ trong icon là phần rỗng, ăn màu nền thẻ).
+   Cuộn tới: thẻ lật vào từ chiều sâu. Hover: lật 180° lộ mặt sau.        */
+.app-deck{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; perspective:900px; }
+@media (max-width:1100px) and (min-width:781px){ .app-deck{ grid-template-columns:1fr; } }
+
+.app-card{
+  aspect-ratio:1/1; min-height:104px;
+  opacity:0; transform:translate3d(0,26px,-60px) rotateY(-38deg);
+  transition:opacity .6s ease, transform .75s cubic-bezier(.16,.8,.24,1);
+  transition-delay:calc(var(--d) * 90ms);
+}
+.reveal.in .app-card{ opacity:1; transform:translate3d(0,0,0) rotateY(0); }
+.app-card:last-child:nth-child(odd){ grid-column:1 / -1; aspect-ratio:auto; min-height:74px; }
+
+.app-inner{
+  position:relative; width:100%; height:100%;
+  transform-style:preserve-3d; transition:transform .62s cubic-bezier(.16,.8,.24,1);
+}
+.app-card:hover .app-inner, .app-card:focus-within .app-inner{ transform:rotateY(180deg); }
+
+.app-face{
+  position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:1px solid var(--line-strong); background:var(--paper-2);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px; text-align:center; padding:10px;
+}
+.app-front{ transition:border-color .4s ease; }
+.app-card:hover .app-front{ border-color:var(--acid); }
+
+/* File icon gốc là hình khối ĐEN, chữ Ps/Ae/Ai là phần rỗng.
+   invert(1) lật khối đen thành sáng, phần rỗng vẫn trong suốt nên
+   chữ ăn màu nền thẻ -> chữ tối trên khối sáng, hợp nền web tối. */
+.app-mark{ width:38px; height:38px; display:block; filter:invert(1); }
+
+/* Premiere Pro không có file icon -> dùng monogram cùng hệ chữ của web */
+.app-mono{
+  width:38px; height:38px; background:var(--off); color:var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:700; letter-spacing:-.02em;
+}
+
+.app-name{ font-family:'JetBrains Mono', monospace; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.app-back{ transform:rotateY(180deg); background:var(--acid); border-color:var(--acid); }
+.app-back span{ font-size:11.5px; font-weight:600; line-height:1.45; color:var(--paper); }
+
+@media (prefers-reduced-motion: reduce){
+  .app-card{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .app-inner, .app-mark{ transition:none !important; }
+  .app-card:hover .app-inner{ transform:none; }
+}
+.skill-col{ background:var(--paper); padding:28px 26px; position:relative; }
+.skill-col::before{ content:"+"; position:absolute; top:8px; right:10px; color:var(--line-strong); font-family:'JetBrains Mono',monospace; font-size:12px; }
+.skill-col h3{ font-family:'Be Vietnam Pro', sans-serif; font-weight:700; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--acid); margin-bottom:16px; }
+.skill-col ul{ list-style:none; }
+.skill-col li{
+  font-size:15px; padding:8px 0; border-top:1px solid var(--line); font-weight:500;
+  opacity:0; transform:translateY(10px); transition:opacity .45s ease, transform .45s cubic-bezier(.16,.8,.24,1);
+}
+.skill-col li:first-child{ border-top:none; }
+.skill-col li:nth-child(1){ transition-delay:.04s; } .skill-col li:nth-child(2){ transition-delay:.1s; }
+.skill-col li:nth-child(3){ transition-delay:.16s; } .skill-col li:nth-child(4){ transition-delay:.22s; }
+.skill-col li:nth-child(5){ transition-delay:.28s; } .skill-col li:nth-child(6){ transition-delay:.34s; }
+.reveal.in .skill-col li{ opacity:1; transform:translateY(0); }
+
+/* ============ CONTACT ============ */
+.contact{ border-bottom:none; }
+.contact-inner{
+  position:relative; background:var(--acid); color:var(--paper);
+  padding:80px 56px; text-align:center;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 88%, 90% 100%, 0 100%);
+}
+@media (max-width:820px){ .contact-inner{ padding:60px 24px; clip-path:polygon(0 0,100% 0,100% 92%,80% 92%,80% 100%,0 100%); } }
+.contact-inner .tag{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; opacity:.7; }
+.contact-inner h2{ font-weight:900; font-size:clamp(34px,6vw,68px); line-height:1.02; margin-top:20px; text-transform:uppercase; letter-spacing:-.01em; }
+.contact-links{ margin-top:40px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+/* Nút liên hệ: màu quét từ trái sang khi hover (sweep fill) — không dùng magnetic nữa */
+.contact-links a{
+  position:relative; overflow:hidden; isolation:isolate;
+  font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:.03em;
+  border:1px solid var(--paper); padding:13px 20px; display:inline-flex; align-items:center; gap:9px;
+  transition:color .35s cubic-bezier(.16,.8,.24,1);
+}
+.contact-links a::before{
+  content:""; position:absolute; inset:0; z-index:-1; background:var(--paper);
+  transform:scaleX(0); transform-origin:left center;
+  transition:transform .42s cubic-bezier(.16,.8,.24,1);
+}
+.contact-links a:hover{ color:var(--acid); }
+.contact-links a:hover::before{ transform:scaleX(1); }
+
+/* QR: nhịp thở nhẹ + vòng lan toả */
+.contact-qr{ margin-top:44px; display:flex; justify-content:center; }
+.contact-qr img{ width:84px; height:84px; border:1px solid var(--paper); image-rendering:pixelated; position:relative; z-index:2; }
+.qr-wrap{ position:relative; display:inline-flex; }
+.qr-wrap::before{
+  content:""; position:absolute; inset:-6px; border:1px solid var(--paper); opacity:0;
+  animation:qrPulse 2.8s cubic-bezier(.16,.8,.24,1) infinite;
+}
+@keyframes qrPulse{
+  0%{ transform:scale(.92); opacity:.55; }
+  70%, 100%{ transform:scale(1.25); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){ .qr-wrap::before{ animation:none; } }
+
+footer{ padding:22px 64px; display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--muted); flex-wrap:wrap; gap:8px; }
+@media (max-width:820px){ footer{ padding:18px 22px; } }
+
+/* ============ TAB SWITCHER ============ */
+.tabs{ display:flex; gap:0; border-bottom:1px solid var(--line); margin-bottom:0; }
+.tab-btn{
+  appearance:none; background:none; border:none; cursor:pointer;
+  display:flex; align-items:center; gap:10px;
+  padding:16px 26px; border-right:1px solid var(--line);
+  color:var(--muted); transition:color .3s ease, background .3s ease; will-change:transform;
+}
+.tab-btn:first-child{ padding-left:0; }
+.tab-idx{ font-size:10.5px; letter-spacing:.05em; opacity:.6; }
+.tab-txt{ font-family:'Be Vietnam Pro', sans-serif; font-weight:800; font-size:14px; letter-spacing:.02em; text-transform:uppercase; text-align:left; }
+.tab-txt small{ display:block; font-family:'JetBrains Mono', monospace; font-weight:400; font-size:9.5px; letter-spacing:.04em; text-transform:none; color:var(--muted); margin-top:2px; }
+.tab-btn:hover{ color:var(--off); }
+.tab-btn.active{ color:var(--acid); }
+.tab-btn.active .tab-idx{ opacity:1; }
+.tab-btn.active .tab-txt small{ color:var(--acid); opacity:.75; }
+
+/* ============ COMING SOON PAGE ============ */
+.soon-plate{ padding-top:90px; padding-bottom:110px; }
+.soon-body{ text-align:center; padding:40px 0 10px; }
+.soon-badge{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-strong); padding:7px 14px; font-size:11px; letter-spacing:.08em; color:var(--acid); margin-bottom:34px; }
+.soon-title{ font-weight:900; text-transform:uppercase; letter-spacing:-.01em; font-size:clamp(48px,10vw,128px); line-height:.92; color:var(--off); }
+.soon-desc{ max-width:520px; margin:34px auto 0; font-size:15px; line-height:1.7; color:var(--muted); }
+.soon-meta{ margin-top:34px; font-size:10.5px; letter-spacing:.05em; color:var(--muted); }
+
+/* ============ MOTION TRACKING (blob/point tracking overlay) ============ */
+#trackCanvas{ position:absolute; top:0; left:0; z-index:15; pointer-events:none; }
+@media (hover:none), (pointer:coarse){ #trackCanvas{ display:none !important; } }
+
+@media (prefers-reduced-motion: reduce){
+  #trackCanvas{ display:none !important; }
+  .tile{ transition:none; }
+  /* Tắt hiệu ứng 3D/parallax, giữ nội dung hiện đầy đủ */
+  .dotgrid .tile{ opacity:1 !important; filter:none !important; transform:none !important; transition:none !important; }
+  .dotgrid.in .tile:hover{ transform:translateY(-6px); box-shadow:none; }
+  [data-fx="drift"], [data-fx="portrait"] img, [data-fx="hero"]{ transform:none !important; opacity:1 !important; }
+  [data-fx="grid"]{ background-position:0 0 !important; }
+}

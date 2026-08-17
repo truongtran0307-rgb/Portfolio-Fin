@@ -1,0 +1,155 @@
+/* ============================================================
+   BASE.CSS — Design tokens & thành phần dùng chung cho toàn site
+   (biến màu, reset, typography helper, cursor, progress bar,
+    view-transition). Nạp file này TRƯỚC home.css / project.css.
+   ============================================================ */
+
+:root{
+  --paper:#0A0A0A;
+  --paper-2:#141414;
+  --off:#F2EFE4;
+  --acid:#D7F53A;
+  --teal:#3FC6D6;
+  --line: rgba(242,239,228,0.16);
+  --line-strong: rgba(242,239,228,0.32);
+  --muted: rgba(242,239,228,0.55);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; background:var(--paper); }
+body{
+  background:var(--paper);
+  color:var(--off);
+  font-family:'Be Vietnam Pro', sans-serif;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+::selection{ background:var(--acid); color:var(--paper); }
+a{ color:inherit; text-decoration:none; }
+.mono{ font-family:'JetBrains Mono', monospace; }
+.grot{ font-family:'Space Grotesk', sans-serif; }
+
+/* ============ SCROLL PROGRESS BAR ============ */
+.progress{ position:fixed; top:0; left:0; height:2px; background:var(--acid); z-index:90; width:0%; }
+
+/* ============ FILM GRAIN OVERLAY (texture 2026) ============ */
+.grain{
+  position:fixed; inset:-50%; z-index:78; pointer-events:none; opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grainShift 700ms steps(3) infinite;
+}
+@keyframes grainShift{
+  0%{ transform:translate(0,0); } 33%{ transform:translate(-3%,2%); } 66%{ transform:translate(2%,-3%); } 100%{ transform:translate(0,0); }
+}
+@media (prefers-reduced-motion: reduce){ .grain{ animation:none; } }
+
+/* ============ CHUYỂN TRANG MƯỢT (View Transitions API) ============
+   Chỉ mờ chồng nhẹ giữa hai trang thay vì chớp trắng một nhịp.
+   Không có "ảnh bay" — đã bỏ vì trông rối.
+   Trình duyệt chưa hỗ trợ thì chuyển trang bình thường, không vỡ gì. */
+@view-transition{ navigation: auto; }
+
+/* ============ MÀN CHỜ (leader phim) ============
+   Mặc định ẨN. Chỉ hiện khi thẻ script nội tuyến ở <head> gắn .preloading —
+   nghĩa là máy nào chặn JS sẽ không bao giờ bị kẹt ở màn chờ trắng. */
+.preloader{ display:none; }
+html.preloading{ overflow:hidden; }
+html.preloading .preloader{
+  display:flex; position:fixed; inset:0; z-index:200;
+  align-items:center; justify-content:center; background:var(--paper);
+}
+html.preloading .preloader::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.022) 3px 4px);
+}
+.pre-inner{ width:min(420px, 74vw); }
+.pre-label{ font-size:10.5px; letter-spacing:.22em; color:var(--muted); }
+.pre-num{
+  font-size:clamp(64px, 12vw, 128px); font-weight:700; line-height:1;
+  color:var(--off); letter-spacing:-.02em; margin:6px 0 14px;
+  font-variant-numeric:tabular-nums;
+}
+.pre-num small{ font-size:.28em; color:var(--muted); margin-left:.35em; letter-spacing:.1em; }
+.pre-bar{ height:2px; background:var(--line-strong); overflow:hidden; }
+.pre-bar i{ display:block; height:100%; width:0; background:var(--acid); transition:width .25s ease; }
+.pre-meta{
+  display:flex; justify-content:space-between; gap:12px;
+  margin-top:12px; font-size:10px; letter-spacing:.08em; color:var(--muted);
+}
+/* Rời màn chờ: nội dung trồi lên nhẹ một nhịp.
+   Chỉ nhắm vào các khối nội dung — KHÔNG áp cho con trỏ tuỳ chỉnh, vì hoạt ảnh
+   transform sẽ giành quyền điều khiển với vị trí con trỏ do JS đặt. */
+html.preloaded .topbar,
+html.preloaded .tabs,
+html.preloaded #page-design,
+html.preloaded .split,
+html.preloaded .proj-strip{ animation:preRise .7s cubic-bezier(.16,.8,.24,1) both; }
+@keyframes preRise{ from{ opacity:0; transform:translateY(14px); } }
+@media (prefers-reduced-motion: reduce){
+  html.preloaded .topbar, html.preloaded .tabs, html.preloaded #page-design,
+  html.preloaded .split, html.preloaded .proj-strip{ animation:none; }
+}
+
+/* ============ CUỘN QUÁN TÍNH (Lenis) ============ */
+html.lenis, html.lenis body{ height:auto; }
+html.lenis-smooth{ scroll-behavior:auto !important; }
+html.lenis-stopped{ overflow:hidden; }
+
+/* ============ CUSTOM CURSOR ============ */
+/* z-index cao hơn màn chờ (200) để lúc đang tải vẫn thấy con trỏ —
+   nếu không, màn chờ che mất mà con trỏ hệ thống thì đã bị ẩn. */
+.cursor-ring{
+  position:fixed; top:0; left:0; width:24px; height:24px; border:1px solid var(--acid);
+  border-radius:50%; pointer-events:none; z-index:210; transform:translate(-50%,-50%);
+  transition:width .25s cubic-bezier(.16,.8,.24,1), height .25s cubic-bezier(.16,.8,.24,1), background .25s ease, opacity .3s ease;
+  mix-blend-mode:difference;
+}
+.cursor-ring.hover{ width:54px; height:54px; background:var(--acid); }
+.cursor-dot{ position:fixed; top:0; left:0; width:4px; height:4px; background:var(--acid); border-radius:50%; pointer-events:none; z-index:211; transform:translate(-50%,-50%); }
+/* Class .cc do JS gắn vào <html> SAU khi con trỏ tuỳ chỉnh đã chạy được.
+   Chỉ khi đó mới ẩn con trỏ hệ thống — nếu không, máy nào không chạy được
+   con trỏ tuỳ chỉnh sẽ mất luôn con trỏ, không thấy gì để bấm. */
+html.cc, html.cc a, html.cc button{ cursor:none; }
+html:not(.cc) .cursor-ring, html:not(.cc) .cursor-dot{ display:none; }
+@media (hover:none), (pointer:coarse){ .cursor-ring, .cursor-dot{ display:none !important; } }
+
+/* ============ GENERIC REVEAL-ON-SCROLL ============ */
+.reveal{ opacity:0; transform:translateY(20px); transition:opacity .65s ease, transform .65s cubic-bezier(.16,.8,.24,1); }
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+/* ============ KINETIC TYPOGRAPHY (tách ký tự, blur-in stagger) ============ */
+.kin{ display:inline-block; white-space:pre; }
+.kin .ch{
+  display:inline-block; opacity:0;
+  transform:translateY(.42em) rotate(3deg);
+  filter:blur(9px);
+  animation:chIn .85s cubic-bezier(.16,.9,.24,1) forwards;
+  animation-delay:calc(var(--i) * 26ms + var(--base, 0ms));
+}
+@keyframes chIn{
+  60%{ filter:blur(0); }
+  to{ opacity:1; transform:translateY(0) rotate(0); filter:blur(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .kin .ch{ animation:none; opacity:1; transform:none; filter:none; }
+}
+
+/* ============ BRACKET HOVER ============ */
+.bracket::before{ content:"["; margin-right:5px; display:inline-block; opacity:0; transform:translateX(6px); transition:all .25s cubic-bezier(.16,.8,.24,1); }
+.bracket::after{ content:"]"; margin-left:5px; display:inline-block; opacity:0; transform:translateX(-6px); transition:all .25s cubic-bezier(.16,.8,.24,1); }
+.bracket:hover::before, .bracket:hover::after{ opacity:1; transform:translateX(0); }
+
+/* ============ VIEW TRANSITIONS (cross-document, cả 2 trang dùng chung tên) ============ */
+@media (prefers-reduced-motion: no-preference){
+  ::view-transition-old(root){ animation: fadeOutDown .35s cubic-bezier(.16,.8,.24,1) both; }
+  ::view-transition-new(root){ animation: fadeInUp .4s cubic-bezier(.16,.8,.24,1) both; }
+}
+@keyframes fadeOutDown{ to{ opacity:0; transform:translateY(-10px); } }
+@keyframes fadeInUp{ from{ opacity:0; transform:translateY(10px); } }
+
+/* Máy bật "giảm chuyển động" (Windows: Cài đặt > Trợ năng > Hiệu ứng hình ảnh)
+   vẫn giữ con trỏ tuỳ chỉnh — nó chỉ bám theo chuột 1:1, không phải hoạt ảnh.
+   Trước đây ẩn nó đi trong khi con trỏ hệ thống cũng đã bị ẩn -> mất con trỏ. */
+@media (prefers-reduced-motion: reduce){
+  .cursor-ring{ transition:width .25s ease, height .25s ease, background .25s ease; }
+}

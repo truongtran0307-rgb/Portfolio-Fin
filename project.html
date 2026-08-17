@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project — Quang Truong</title>
+<meta name="view-transition" content="same-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/project.css">
+
+<!-- Google Analytics (gtag.js) — đếm lượt truy cập, xem báo cáo tại analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VWQNW1G6H2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VWQNW1G6H2');
+</script>
+
+<!-- Rê chuột vào Prev/Next hay dải dự án -> dựng sẵn trang đó, bấm là hiện ngay -->
+<script type="speculationrules">
+{
+  "prerender": [{
+    "where": { "selector_matches": ".nav-arrows a, .strip-tile, .back" },
+    "eagerness": "moderate"
+  }]
+}
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="grain"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div class="topbar">
+  <a class="back" href="index.html#work">Back to home</a>
+  <div class="brand grot">QUANG TRUONG</div>
+  <div class="nav-arrows mono">
+    <a id="prevBtn" href="#">← Prev</a>
+    <a id="nextBtn" href="#">Next →</a>
+  </div>
+</div>
+
+<div class="split">
+  <div class="panel-left">
+    <div class="plate-tag reveal" id="p-tag">—</div>
+    <h1 class="p-title reveal" id="p-title">—</h1>
+    <div class="p-sub reveal" id="p-sub">—</div>
+
+    <div class="meta-grid" id="p-meta"></div>
+
+    <div class="p-desc reveal" id="p-desc"></div>
+
+    <div class="tools" id="p-tools"></div>
+
+    <a class="p-cta" id="p-cta" href="https://www.behance.net/gallery/254056325/Portfolio-2026" target="_blank">View on Behance</a>
+  </div>
+
+  <div class="panel-right" id="p-gallery"></div>
+</div>
+
+<div class="proj-strip">
+  <h3>All projects</h3>
+  <div class="strip-row" id="proj-strip"></div>
+</div>
+
+<footer>
+  <span>QUANG TRUONG / PORTFOLIO 2026</span>
+  <span>SEE YOU SOON</span>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" type="button">✕ CLOSE</button>
+  <button class="lb-prev" id="lbPrev" type="button">←</button>
+  <button class="lb-next" id="lbNext" type="button">→</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-counter mono" id="lbCounter"></div>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script src="assets/js/projects-data.js"></script>
+<script src="assets/js/project.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+/* ============================================================
+   PROJECT.CSS — Riêng cho project.html (trang chi tiết dự án)
+   Nạp SAU base.css.
+   ============================================================ */
+
+.topbar{ display:flex; align-items:center; justify-content:space-between; padding:20px 64px; border-bottom:1px solid var(--line); }
+@media (max-width:900px){ .topbar{ padding:16px 20px; } }
+.brand{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:14px; }
+.back{ font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.05em; color:var(--muted); display:inline-flex; align-items:center; gap:8px; transition:color .25s ease; }
+.back:hover{ color:var(--acid); }
+.back::before{ content:"←"; }
+.nav-arrows{ display:flex; gap:10px; font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.05em; }
+.nav-arrows a{ border:1px solid var(--line-strong); padding:8px 14px; color:var(--muted); transition:all .25s ease; }
+.nav-arrows a:hover{ color:var(--acid); border-color:var(--acid); }
+
+.split{ display:grid; grid-template-columns:38% 62%; min-height:calc(100vh - 68px); }
+@media (max-width:980px){ .split{ grid-template-columns:1fr; } }
+
+.panel-left{ padding:56px 48px; border-right:1px solid var(--line); position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; }
+@media (max-width:980px){ .panel-left{ position:relative; height:auto; border-right:none; border-bottom:1px solid var(--line); padding:36px 22px; } }
+
+.plate-tag{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:11px; letter-spacing:.1em; color:var(--acid); text-transform:uppercase; }
+.p-title{ font-weight:900; text-transform:uppercase; font-size:clamp(30px,3.4vw,46px); line-height:1.02; margin-top:16px; letter-spacing:-.01em; }
+.p-sub{ margin-top:14px; font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:14px; color:var(--teal); text-transform:uppercase; letter-spacing:.02em; }
+
+.meta-grid{ margin-top:34px; }
+.meta-row{
+  padding:14px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:16px;
+  opacity:0; transform:translateX(-10px); transition:opacity .45s ease, transform .45s cubic-bezier(.16,.8,.24,1);
+}
+.meta-row.in{ opacity:1; transform:translateX(0); }
+.meta-row .k{ font-family:'Be Vietnam Pro', sans-serif; font-weight:600; font-size:10.5px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase; white-space:nowrap; }
+.meta-row .v{ font-size:13.5px; font-weight:600; text-align:right; }
+
+.p-desc{ margin-top:30px; font-size:15px; line-height:1.75; color:var(--off); opacity:.88; }
+.p-desc p + p{ margin-top:14px; }
+.p-desc b{ color:var(--acid); font-weight:700; }
+
+.tools{ margin-top:30px; display:flex; flex-wrap:wrap; gap:8px; }
+.tools span{
+  font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.03em; border:1px solid var(--line-strong); padding:6px 11px; color:var(--muted);
+  opacity:0; transform:translateY(8px); transition:opacity .4s ease, transform .4s ease;
+}
+.tools.in span{ opacity:1; transform:translateY(0); }
+.tools.in span:nth-child(1){ transition-delay:.03s; } .tools.in span:nth-child(2){ transition-delay:.08s; }
+.tools.in span:nth-child(3){ transition-delay:.13s; } .tools.in span:nth-child(4){ transition-delay:.18s; }
+
+.p-cta{
+  margin-top:36px; display:inline-flex; align-items:center; gap:8px; font-family:'Be Vietnam Pro', sans-serif; font-weight:700; font-size:12px; letter-spacing:.05em; text-transform:uppercase;
+  background:var(--acid); color:var(--paper); padding:14px 22px;
+  transition:transform .25s cubic-bezier(.16,.8,.24,1), background .25s ease;
+}
+.p-cta::after{ content:"↗"; }
+.p-cta:hover{ transform:translateY(-2px); background:var(--teal); }
+
+/* Lưới gallery 2 cột: ảnh ngang chiếm cả 2 cột, ảnh dọc/vuông 1 cột.
+   Class .is-wide / .is-tall / .is-sq do project.js gán theo tỉ lệ thật của ảnh. */
+.panel-right{
+  padding:56px 48px;
+  display:grid; grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:20px; align-content:start; align-items:start; justify-items:center;
+}
+@media (max-width:980px){ .panel-right{ padding:24px 20px; grid-template-columns:1fr; gap:16px; } }
+
+.g-item{
+  position:relative; border:1px solid var(--line-strong); background:var(--paper-2); overflow:hidden;
+  cursor:zoom-in; will-change:transform; width:100%;
+  display:flex; flex-direction:column; justify-content:center;
+  opacity:0; transform:translateY(24px) scale(.98); transition:opacity .6s ease, transform .6s cubic-bezier(.16,.8,.24,1);
+}
+.g-item.in{ opacity:1; transform:translateY(0) scale(1); }
+
+/* ảnh ngang & video: trải hết chiều rộng khung phải */
+.g-item.is-wide, .g-item.is-video{ grid-column:1 / -1; }
+/* ảnh dọc: hạn chế bề ngang để không quá cao, luôn nằm giữa ô */
+.g-item.is-tall{ max-width:74%; }
+@media (max-width:980px){ .g-item.is-wide, .g-item.is-video{ grid-column:auto; } .g-item.is-tall{ max-width:88%; } }
+
+.g-item img, .g-item video{ width:100%; height:auto; display:block; margin:0 auto; }
+.g-item img{ transition:transform .6s cubic-bezier(.16,.8,.24,1), filter .5s ease; filter:contrast(1.02) saturate(1.02); }
+.g-item:hover img{ transform:scale(1.03); filter:contrast(1.05) saturate(1.06); }
+.g-item video{ cursor:default; background:#000; }
+.g-item.is-video{ cursor:default; }
+.g-item::before{
+  content:""; position:absolute; left:0; right:0; height:2px; top:-10%; z-index:3;
+  background:linear-gradient(90deg, transparent, var(--off), transparent);
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.g-item:hover::before{ opacity:.5; animation:scan 1.1s linear infinite; }
+@keyframes scan{ from{ top:-8%; } to{ top:106%; } }
+.g-cap{ font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.05em; color:var(--muted); padding:8px 2px 0; display:flex; justify-content:space-between; }
+
+.proj-strip{ padding:40px 64px 70px; border-top:1px solid var(--line); }
+@media (max-width:900px){ .proj-strip{ padding:30px 20px 50px; } }
+.proj-strip h3{ font-family:'Be Vietnam Pro', sans-serif; font-weight:700; font-size:11px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:18px; }
+.strip-row{ display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; }
+.strip-tile{ flex:0 0 190px; border:1px solid var(--line-strong); background:var(--paper-2); transition:border-color .3s ease, transform .3s cubic-bezier(.16,.8,.24,1); }
+.strip-tile:hover{ border-color:var(--acid); transform:translateY(-5px); }
+.strip-tile img{ width:100%; aspect-ratio:4/3; object-fit:cover; object-position:center; display:block; filter:grayscale(35%) contrast(1.04); transition:filter .4s ease, transform .5s cubic-bezier(.16,.8,.24,1); }
+.strip-tile:hover img{ transform:scale(1.06); }
+.strip-tile.active img{ filter:none; }
+.strip-tile .st-t{ font-size:11.5px; font-weight:700; padding:9px 10px 11px; text-transform:uppercase; }
+
+footer{ padding:22px 64px; display:flex; justify-content:space-between; font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--muted); flex-wrap:wrap; gap:8px; border-top:1px solid var(--line); }
+
+/* ============ LIGHTBOX ============ */
+.lightbox{
+  position:fixed; inset:0; z-index:120; background:rgba(10,10,10,.96);
+  display:flex; align-items:center; justify-content:center; padding:40px;
+  opacity:0; pointer-events:none; transition:opacity .3s ease;
+}
+.lightbox.open{ opacity:1; pointer-events:auto; }
+/* Khi mở ảnh lớn: tắt con trỏ tuỳ chỉnh, trả lại con trỏ hệ thống.
+   Trước đây vòng tròn + chấm (mix-blend-mode) đè lên ảnh trông như
+   có nhiều con trỏ cùng lúc. */
+html.lb-open{ cursor:auto !important; }
+html.lb-open .cursor-ring, html.lb-open .cursor-dot{ opacity:0; visibility:hidden; }
+html.lb-open a, html.lb-open button{ cursor:pointer !important; }
+.lightbox img{ cursor:auto; }
+.lightbox img{ max-width:100%; max-height:100%; object-fit:contain; box-shadow:0 30px 80px rgba(0,0,0,.6); transform:scale(.96); transition:transform .35s cubic-bezier(.16,.8,.24,1); }
+.lightbox.open img{ transform:scale(1); }
+.lb-close, .lb-prev, .lb-next{
+  position:fixed; font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.05em;
+  color:var(--off); border:1px solid var(--line-strong); background:rgba(10,10,10,.7);
+  padding:10px 16px; cursor:pointer; transition:all .25s ease; z-index:121;
+}
+.lb-close:hover, .lb-prev:hover, .lb-next:hover{ color:var(--acid); border-color:var(--acid); }
+.lb-close{ top:22px; right:22px; }
+.lb-prev{ left:22px; top:50%; transform:translateY(-50%); }
+.lb-next{ right:22px; top:50%; transform:translateY(-50%); }
+.lb-counter{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); letter-spacing:.05em; z-index:121; }
+@media (max-width:700px){ .lb-prev,.lb-next{ padding:8px 12px; } .lightbox{ padding:16px; } }
+
+@media (prefers-reduced-motion: reduce){
+  .reveal, .g-item, .meta-row, .tools span{ opacity:1 !important; transform:none !important; transition:none !important; }
+}
