@@ -46,8 +46,8 @@ const PROJECTS = [
   },
 
   {
-    slug:"illustration", reel:"03", plate:"STUDY PROJECT / BRAND",
-    title:"Brand Illustration", sub:"Vector Illustration & Icon System",
+    slug:"illustration", reel:"03", plate:"STUDY PROJECT",
+    title:"Illustration", sub:"Vector Illustration & Icon System",
     kind:"Study project", year:"2023", role:"Illustrator",
     tools:["Illustrator"],
     desc:"<p>Flat <b>vector illustration</b> and icon systems — an 80-piece themed icon grid, editorial food illustration, an architectural study and a stylised character portrait.</p><p>Limited palettes, confident shape language and consistency held across a full set.</p>",
