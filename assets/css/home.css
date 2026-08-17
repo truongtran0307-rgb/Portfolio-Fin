@@ -431,13 +431,86 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
 .tab-btn.active .tab-idx{ opacity:1; }
 .tab-btn.active .tab-txt small{ color:var(--acid); opacity:.75; }
 
-/* ============ COMING SOON PAGE ============ */
-.soon-plate{ padding-top:90px; padding-bottom:110px; }
-.soon-body{ text-align:center; padding:40px 0 10px; }
-.soon-badge{ display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-strong); padding:7px 14px; font-size:11px; letter-spacing:.08em; color:var(--acid); margin-bottom:34px; }
-.soon-title{ font-weight:900; text-transform:uppercase; letter-spacing:-.01em; font-size:clamp(48px,10vw,128px); line-height:.92; color:var(--off); }
-.soon-desc{ max-width:520px; margin:34px auto 0; font-size:15px; line-height:1.7; color:var(--muted); }
-.soon-meta{ margin-top:34px; font-size:10.5px; letter-spacing:.05em; color:var(--muted); }
+/* ============ PROMOTER (tab 02) ============ */
+
+/* --- Mở đầu: câu dẫn + 4 con số --- */
+.pm-open{ padding-top:84px; padding-bottom:92px; }
+.pm-open-body{ display:grid; grid-template-columns:1.15fr 1fr; gap:64px; align-items:start; }
+.pm-lead{ font-size:clamp(17px,1.7vw,22px); line-height:1.62; color:var(--off); font-weight:500; }
+
+.pm-stats{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+.pm-stat{ background:var(--paper); padding:26px 22px 22px; }
+.pm-num{
+  font-family:'Space Grotesk', sans-serif; font-weight:700; line-height:1;
+  font-size:clamp(34px,4vw,52px); color:var(--acid);
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em;
+}
+.pm-lbl{ margin-top:10px; font-size:13px; font-weight:600; color:var(--off); }
+.pm-note{ margin-top:5px; font-size:10px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase; }
+
+@media (max-width:980px){
+  .pm-open-body{ grid-template-columns:1fr; gap:44px; }
+}
+@media (max-width:520px){
+  .pm-stats{ grid-template-columns:1fr; }
+}
+
+/* --- Từng sự kiện: đầu đề hai cột, rồi lưới ảnh --- */
+.pm-event{ padding:78px 0; }
+.pm-event:last-child{ border-bottom:none; }
+
+.pm-ev-head{ display:grid; grid-template-columns:1.05fr 1fr; gap:56px; align-items:start; margin-bottom:44px; }
+.pm-ev-idx{ font-size:10.5px; letter-spacing:.2em; color:var(--acid); margin-bottom:14px; }
+.pm-ev-head h3{
+  font-weight:800; text-transform:uppercase; letter-spacing:-.01em;
+  font-size:clamp(26px,3.4vw,40px); line-height:1.06; color:var(--off);
+}
+.pm-ev-meta{ margin-top:14px; font-size:11px; letter-spacing:.06em; color:var(--muted); }
+.pm-ev-main p{ font-size:15px; line-height:1.75; color:var(--muted); }
+.pm-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.pm-tags span{
+  font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--off);
+  border:1px solid var(--line-strong); padding:6px 11px;
+}
+@media (max-width:900px){ .pm-ev-head{ grid-template-columns:1fr; gap:26px; } }
+
+/* Lưới ảnh: ảnh ngang chiếm 2 cột, còn lại 1 cột. Ảnh đầu luôn to nhất. */
+.pm-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
+/* Hiện dần khi cuộn tới: dùng chung class .reveal / .reveal.in ở base.css,
+   nên home.js tự quét được — không cần thêm logic riêng cho phần này. */
+/* Khung tỉ lệ cố định -> lưới đều tăm tắp dù ảnh gốc lệch nhau vài chục pixel.
+   Ảnh mở màn dùng 16:9 (không phải 21:9) để ảnh chụp tập thể không bị cắt đầu. */
+.pm-item{
+  position:relative; overflow:hidden; background:var(--paper-2);
+  border:1px solid var(--line); cursor:pointer; aspect-ratio:3/2;
+  transition:opacity .65s ease, transform .65s cubic-bezier(.16,.8,.24,1), border-color .3s ease;
+}
+.pm-item.is-wide{ grid-column:span 2; aspect-ratio:16/9; }
+.pm-item img{
+  display:block; width:100%; height:100%; object-fit:cover;
+  transition:transform .7s cubic-bezier(.16,.8,.24,1), filter .4s ease;
+}
+.pm-item:hover{ border-color:var(--line-strong); }
+.pm-item:hover img{ transform:scale(1.035); }
+
+.pm-item figcaption{
+  position:absolute; left:0; right:0; bottom:0;
+  display:flex; justify-content:space-between; gap:12px;
+  padding:10px 13px; font-size:9.5px; letter-spacing:.1em; color:var(--off);
+  background:linear-gradient(to top, rgba(10,10,10,.86), transparent);
+  opacity:0; transform:translateY(6px); transition:all .35s ease;
+}
+.pm-item:hover figcaption{ opacity:1; transform:translateY(0); }
+
+@media (max-width:640px){
+  .pm-grid{ grid-template-columns:1fr; gap:11px; }
+  .pm-item.is-wide{ grid-column:span 1; aspect-ratio:3/2; }
+}
+@media (prefers-reduced-motion: reduce){
+  .pm-item{ transition:none; }
+  .pm-item:hover img{ transform:none; }
+}
 
 /* ============ MOTION TRACKING (blob/point tracking overlay) ============ */
 #trackCanvas{ position:absolute; top:0; left:0; z-index:15; pointer-events:none; }

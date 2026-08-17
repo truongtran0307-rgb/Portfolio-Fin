@@ -331,29 +331,31 @@
 
 <div id="page-promoter" hidden>
 
-  <section class="plate soon-plate">
+  <!-- Mở đầu: vai trò + 4 con số. Nội dung lấy từ promoter-data.js -->
+  <section class="plate pm-open">
     <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
     <div class="wrap">
-      <div class="plate-head reveal in">
+      <div class="plate-head reveal">
         <div class="tag">06 / PROMOTER</div>
         <h2>Promoter at FPT</h2>
       </div>
 
-      <div class="soon-body reveal in">
-        <div class="soon-badge mono"><span class="rec-dot"></span>IN PROGRESS</div>
-        <div class="soon-title">COMING<br>SOON</div>
-        <p class="soon-desc">Promoter work at FPT University is being compiled — photos, video and event figures will be published here soon.</p>
-        <div class="soon-meta mono">STATUS: IN&nbsp;PROGRESS &nbsp;·&nbsp; ETA: TBA &nbsp;·&nbsp; SECTION 06</div>
+      <div class="pm-open-body">
+        <p class="pm-lead reveal" id="pm-lead"></p>
+        <div class="pm-stats" id="pm-stats"></div>
       </div>
     </div>
   </section>
 
   <div class="ticker">
     <div class="ticker-track">
-      <span>PROMOTER AT FPT</span><span>COMING SOON</span><span>IN PROGRESS</span>
-      <span>PROMOTER AT FPT</span><span>COMING SOON</span><span>IN PROGRESS</span>
+      <span><b>ADMISSIONS</b></span><span>CAMPUS <b>TOUR</b></span><span><b>EVENT</b> HOSTING</span><span>STUDENT CONSULTING</span><span>ON-SITE COORDINATION</span>
+      <span><b>ADMISSIONS</b></span><span>CAMPUS <b>TOUR</b></span><span><b>EVENT</b> HOSTING</span><span>STUDENT CONSULTING</span><span>ON-SITE COORDINATION</span>
     </div>
   </div>
+
+  <!-- Các khối sự kiện được dựng bằng JS từ PROMOTER_EVENTS -->
+  <div id="pm-events"></div>
 
   <footer>
     <span>QUANG TRUONG / PROMOTER</span>
@@ -361,6 +363,15 @@
   </footer>
 
 </div><!-- /#page-promoter -->
+
+<!-- Xem ảnh phóng to (dùng chung cho phần Promoter) -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" type="button">✕ CLOSE</button>
+  <button class="lb-prev" id="lbPrev" type="button">←</button>
+  <button class="lb-next" id="lbNext" type="button">→</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-counter mono" id="lbCounter"></div>
+</div>
 
 <script src="assets/js/projects-data.js"></script>
 <script>
@@ -391,6 +402,96 @@
     </div>
   `).join('');
 </script>
+
+<script src="assets/js/promoter-data.js"></script>
+<script>
+  /* ---- Dựng phần Promoter từ promoter-data.js -------------------------------
+     Chạy TRƯỚC home.js, vì home.js quét .reveal một lần lúc tải trang —
+     nội dung sinh sau sẽ không bao giờ được gắn hiệu ứng hiện ra.            */
+  document.getElementById('pm-lead').textContent = PROMOTER_INTRO;
+
+  document.getElementById('pm-stats').innerHTML = PROMOTER_STATS.map(s => `
+    <div class="pm-stat reveal">
+      <div class="pm-num"><span data-count="${s.n}">0</span>${s.suffix}</div>
+      <div class="pm-lbl">${s.label}</div>
+      <div class="pm-note mono">${s.note}</div>
+    </div>`).join('');
+
+  /* Ảnh ngang thì cho chiếm 2 cột, ảnh vuông/dọc 1 cột — lưới không bị lỗ hổng.
+     Ảnh đầu mỗi sự kiện luôn to nhất, đóng vai trò ảnh mở màn.               */
+  const PM_ALL = [];
+  document.getElementById('pm-events').innerHTML = PROMOTER_EVENTS.map(ev => {
+    const items = ev.gallery.map((src, i) => {
+      const d = PROMOTER_SIZE[src];
+      const dim = d ? ` width="${d[0]}" height="${d[1]}"` : '';
+      const wide = i === 0 || (d && d[0] / d[1] >= 1.6);
+      PM_ALL.push(src);
+      const lb = PM_ALL.length - 1;
+      return `<figure class="pm-item reveal${wide ? ' is-wide' : ''}" data-lb="${lb}">
+          <img src="${src}"${dim} loading="lazy" decoding="async" alt="${ev.title} ${i + 1}">
+          <figcaption class="mono"><span>${ev.idx}·${String(i + 1).padStart(2, '0')}</span><span>${ev.title.toUpperCase()}</span></figcaption>
+        </figure>`;
+    }).join('');
+
+    return `<section class="plate pm-event">
+      <div class="wrap">
+        <div class="pm-ev-head">
+          <div class="pm-ev-side">
+            <div class="pm-ev-idx mono">EV ${ev.idx}</div>
+            <h3 class="reveal">${ev.title}</h3>
+            <div class="pm-ev-meta mono reveal">${ev.meta}</div>
+          </div>
+          <div class="pm-ev-main reveal">
+            <p>${ev.desc}</p>
+            <div class="pm-tags">${ev.tags.map(t => `<span>${t}</span>`).join('')}</div>
+          </div>
+        </div>
+        <div class="pm-grid">${items}</div>
+      </div>
+    </section>`;
+  }).join('');
+
+  /* ---- Xem ảnh phóng to ---- */
+  (function initPromoterLightbox(){
+    const box = document.getElementById('lightbox');
+    const img = document.getElementById('lbImg');
+    const cnt = document.getElementById('lbCounter');
+    let i = 0;
+
+    const show = () => {
+      img.src = PM_ALL[i];
+      cnt.textContent = `${i + 1} / ${PM_ALL.length}`;
+    };
+    const open = (n) => {
+      i = n; show();
+      box.classList.add('open');
+      // Trả lại con trỏ hệ thống + khoá cuộn nền khi đang xem ảnh lớn
+      document.documentElement.classList.add('lb-open');
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+      box.classList.remove('open');
+      document.documentElement.classList.remove('lb-open');
+      document.body.style.overflow = '';
+    };
+    const step = (d) => { i = (i + d + PM_ALL.length) % PM_ALL.length; show(); };
+
+    document.querySelectorAll('.pm-item[data-lb]').forEach(el => {
+      el.addEventListener('click', () => open(parseInt(el.dataset.lb, 10)));
+    });
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+    document.getElementById('lbNext').addEventListener('click', () => step(1));
+    box.addEventListener('click', (e) => { if(e.target === box) close(); });
+    document.addEventListener('keydown', (e) => {
+      if(!box.classList.contains('open')) return;
+      if(e.key === 'Escape') close();
+      if(e.key === 'ArrowLeft') step(-1);
+      if(e.key === 'ArrowRight') step(1);
+    });
+  })();
+</script>
+
 <script src="assets/js/common.js"></script>
 <script src="assets/js/home.js"></script>
 
