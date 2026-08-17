@@ -405,9 +405,18 @@
 
 <script src="assets/js/promoter-data.js"></script>
 <script>
-  /* ---- Dựng phần Promoter từ promoter-data.js -------------------------------
-     Chạy TRƯỚC home.js, vì home.js quét .reveal một lần lúc tải trang —
-     nội dung sinh sau sẽ không bao giờ được gắn hiệu ứng hiện ra.            */
+/* ---- Dựng phần Promoter từ promoter-data.js -------------------------------
+   Chạy TRƯỚC home.js, vì home.js quét .reveal một lần lúc tải trang —
+   nội dung sinh sau sẽ không bao giờ được gắn hiệu ứng hiện ra.
+
+   PROMOTER_PUBLISHED = false -> gỡ hẳn tab 02 và cả khối nội dung ra khỏi
+   trang. Không phải chỉ giấu bằng CSS: markup bị xoá, ảnh không hề được
+   yêu cầu tải, nên người xem không có cách nào mở ra hay dò thấy.          */
+if(!PROMOTER_PUBLISHED){
+  document.querySelector('.tab-btn[data-page="promoter"]').remove();
+  document.getElementById('page-promoter').remove();
+  document.querySelector('.tabs').classList.add('tabs--solo');
+} else {
   document.getElementById('pm-lead').textContent = PROMOTER_INTRO;
 
   document.getElementById('pm-stats').innerHTML = PROMOTER_STATS.map(s => `
@@ -490,6 +499,7 @@
       if(e.key === 'ArrowRight') step(1);
     });
   })();
+}
 </script>
 
 <script src="assets/js/common.js"></script>

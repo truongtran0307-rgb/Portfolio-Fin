@@ -416,6 +416,10 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
 
 /* ============ TAB SWITCHER ============ */
 .tabs{ display:flex; gap:0; border-bottom:1px solid var(--line); margin-bottom:0; }
+/* Chỉ còn một tab (Promoter chưa công bố): nó không còn là nút bấm nữa,
+   chỉ là nhãn đầu mục — bỏ con trỏ bàn tay và bỏ vạch ngăn bên phải để
+   không gợi ý rằng có mục thứ hai đang bị thiếu. */
+.tabs--solo .tab-btn{ cursor:default; border-right:none; }
 .tab-btn{
   appearance:none; background:none; border:none; cursor:pointer;
   display:flex; align-items:center; gap:10px;

@@ -102,14 +102,18 @@ updateScrollFX();
 
 // ---- tab switcher (Thiết kế / Promoter) ----
 const pageDesign = document.getElementById('page-design');
+// Có thể là null: khi PROMOTER_PUBLISHED = false, index.html gỡ hẳn khối này
+// ra khỏi trang. Mọi chỗ dùng bên dưới đều phải kiểm tra trước.
 const pagePromoter = document.getElementById('page-promoter');
-function getActivePageEl(){ return pagePromoter.hidden ? pageDesign : pagePromoter; }
+function getActivePageEl(){
+  return (pagePromoter && !pagePromoter.hidden) ? pagePromoter : pageDesign;
+}
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const target = btn.dataset.page;
     document.querySelectorAll('.tab-btn').forEach(b=> b.classList.toggle('active', b===btn));
     pageDesign.hidden = target !== 'design';
-    pagePromoter.hidden = target !== 'promoter';
+    if(pagePromoter) pagePromoter.hidden = target !== 'promoter';
     window.scrollTo(0,0);
     checkReveal();
     if(trackingHandle) trackingHandle.computeAnchors();

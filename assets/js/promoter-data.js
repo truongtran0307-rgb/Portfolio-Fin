@@ -9,6 +9,18 @@
      một object vào mảng; ảnh bỏ vào assets/gallery/promoter/.
    ============================================================ */
 
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║  CÔNG TẮC CÔNG BỐ                                                ║
+   ║                                                                  ║
+   ║    false  → ẩn hoàn toàn. Khách vào web không thấy tab 02,       ║
+   ║             không tải ảnh, không có cách nào mở ra.              ║
+   ║    true   → hiện tab 02 PROMOTER cho mọi người xem.              ║
+   ║                                                                  ║
+   ║  Khi đã sửa xong số liệu + mô tả bên dưới, đổi false → true,     ║
+   ║  lưu file, rồi đẩy lên GitHub là trang tự hiện ra.               ║
+   ╚══════════════════════════════════════════════════════════════════╝ */
+const PROMOTER_PUBLISHED = false;
+
 const PROMOTER_INTRO =
   "Beyond the design desk, I represent FPT University on the ground — running admissions " +
   "seminars, coordinating campus events and talking directly with high-school students and " +
