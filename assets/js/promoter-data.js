@@ -23,8 +23,9 @@ const PROMOTER_PUBLISHED = true;
 
 const PROMOTER_INTRO =
   "Beyond the design desk, I run admissions activity for FPT University across Ho Chi Minh City — " +
-  "planning and hosting in-school programmes, advising students and parents on majors and admission " +
-  "regulations at career forums, and coordinating the logistics, staffing and comms behind each event.";
+  "planning and hosting campus experience programmes, advising students and parents on majors and " +
+  "admission regulations at career forums and fairs, and coordinating the logistics, staffing and " +
+  "comms behind each event.";
 
 const PROMOTER_STATS = [
   { n: 30,   suffix: "+", label: "High schools",     note: "across Ho Chi Minh City" },
@@ -44,12 +45,13 @@ const PROMOTER_SKILLS = [
 const PROMOTER_EVENTS = [
   {
     idx: "01",
-    title: "Campus Tour & Experience Day",
+    title: "FPTU Experience Day",
     meta: "2025 · HCM Campus · Planner & Host",
-    desc: "Our flagship in-school experience programme, built to let high-school students " +
-          "spend a full day inside the university — welcome desk, faculty seminars, facility " +
-          "tour and closing group photo. I planned the run-of-show, hosted the hall during " +
-          "talks and guided cohorts between stops. <b>Over 3,000 students</b> have been through it.",
+    desc: "A career-orientation series built around one idea: <b>a day in the life of an FPTU " +
+          "student</b>. Grade-12 groups sit in on trial classes, explore majors hands-on and " +
+          "move through the campus culture spaces — welcome desk, faculty seminars, facility " +
+          "tour, closing group photo. I planned the run-of-show, hosted the hall during talks " +
+          "and guided cohorts between stops. <b>Over 3,000 students</b> have been through it.",
     tags: ["Programme planning", "Event hosting", "Group guiding"],
     gallery: [
       "assets/gallery/promoter/ct6.jpg","assets/gallery/promoter/ct4.jpg",
@@ -61,12 +63,13 @@ const PROMOTER_EVENTS = [
   },
   {
     idx: "02",
-    title: "AI & Robotics Challenge",
-    meta: "2025 · Regional Robotics Round · Coordinator",
-    desc: "Regional robotics competition hosted on campus, drawing school teams from across " +
-          "the city. I handled logistics and staffing — build-hall setup, team check-in, " +
-          "arena-side coordination through the qualifying and final rounds, then the award " +
-          "ceremony line-up.",
+    title: "FPTU AI & Robotics Challenge",
+    meta: "2025 · National Competition · Coordinator",
+    desc: "FPT University's <b>national technology competition for high-school students</b> — " +
+          "a proving ground where teams apply AI and robotics to real problems rather than " +
+          "just study them. I handled logistics and staffing on the regional round: build-hall " +
+          "setup, team check-in, arena-side coordination through qualifying and finals, then " +
+          "the award ceremony line-up.",
     tags: ["Logistics", "Staffing", "Stage coordination"],
     gallery: [
       "assets/gallery/promoter/ai3.jpg","assets/gallery/promoter/ai5.jpg",
@@ -76,13 +79,16 @@ const PROMOTER_EVENTS = [
   },
   {
     idx: "03",
-    title: "Ngày hội tuyển sinh",
-    meta: "2024 — 2025 · Career Forums · Consultant",
-    desc: "Career forums and admissions fairs held at high schools across Ho Chi Minh City — " +
-          "<b>more than 30 schools</b> to date. Front-of-booth consulting: walking students and " +
-          "parents through majors, admission regulations and the scholarship scheme, one " +
-          "conversation at a time, from opening to pack-down.",
-    tags: ["1-on-1 consulting", "Public speaking", "Admission regulations"],
+    title: "Admissions Fairs",
+    meta: "2024 — 2025 · Career Forums · FPTU Booth Lead",
+    desc: "Two fairs anchor the admissions calendar. <b>March</b> brings the career-orientation " +
+          "fair — majors, pathways and early-admission routes. <b>Early July</b>, once exam " +
+          "results land, brings the preference-selection fair, where the questions turn urgent " +
+          "and specific. Both are hosted on Bách Khoa campuses alongside booths from other " +
+          "universities; I run FPTU's. Add the school-level career forums — <b>more than 30 " +
+          "high schools</b> across Ho Chi Minh City — and it is one conversation at a time, " +
+          "from opening to pack-down.",
+    tags: ["1-on-1 consulting", "Booth operation", "Admission regulations"],
     gallery: [
       "assets/gallery/promoter/nh1.jpg","assets/gallery/promoter/nh3.jpg",
       "assets/gallery/promoter/nh2.jpg","assets/gallery/promoter/nh4.jpg",
