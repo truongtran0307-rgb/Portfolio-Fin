@@ -511,6 +511,16 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
   .pm-grid{ grid-template-columns:1fr; gap:11px; }
   .pm-item.is-wide{ grid-column:span 1; aspect-ratio:3/2; }
 }
+
+/* --- Bốn mảng kỹ năng, khép lại phần Promoter --- */
+.pm-skills-plate{ padding:84px 0; border-bottom:none; }
+.pm-skills{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+.pm-skill{ background:var(--paper); padding:28px 24px 30px; }
+.pm-skill-n{ font-size:10.5px; letter-spacing:.18em; color:var(--acid); }
+.pm-skill-t{ margin-top:16px; font-weight:700; font-size:17px; color:var(--off); letter-spacing:-.01em; }
+.pm-skill-d{ margin-top:11px; font-size:13.5px; line-height:1.65; color:var(--muted); }
+@media (max-width:1000px){ .pm-skills{ grid-template-columns:repeat(2, 1fr); } }
+@media (max-width:560px){ .pm-skills{ grid-template-columns:1fr; } }
 @media (prefers-reduced-motion: reduce){
   .pm-item{ transition:none; }
   .pm-item:hover img{ transform:none; }

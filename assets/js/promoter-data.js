@@ -22,27 +22,35 @@
 const PROMOTER_PUBLISHED = false;
 
 const PROMOTER_INTRO =
-  "Beyond the design desk, I represent FPT University on the ground — running admissions " +
-  "seminars, coordinating campus events and talking directly with high-school students and " +
-  "their parents about programmes, scholarships and career pathways.";
+  "Beyond the design desk, I run admissions activity for FPT University across Ho Chi Minh City — " +
+  "planning and hosting in-school programmes, advising students and parents on majors and admission " +
+  "regulations at career forums, and coordinating the logistics, staffing and comms behind each event.";
 
-/* ⚠️ SỐ LIỆU MẪU — thay bằng số thật rồi hãy publish */
 const PROMOTER_STATS = [
+  { n: 30,   suffix: "+", label: "High schools",     note: "across Ho Chi Minh City" },
+  { n: 3000, suffix: "+", label: "Students hosted",  note: "campus tour & experience day" },
   { n: 3,    suffix: "",  label: "Years active",     note: "2023 — present" },
-  { n: 20,   suffix: "+", label: "Events run",       note: "seminars & fairs" },
-  { n: 2000, suffix: "+", label: "Students advised", note: "students & parents" },
   { n: 3,    suffix: "",  label: "Event series",     note: "featured below" },
+];
+
+/* Bốn mảng kỹ năng, hiện ở cuối phần Promoter */
+const PROMOTER_SKILLS = [
+  { t: "Consulting",        d: "One-on-one advising for students and parents on majors, programmes and career pathways." },
+  { t: "Event coordination", d: "Planning, logistics, staffing and on-site run-through for admissions programmes." },
+  { t: "Public speaking",    d: "Hosting career forums and presenting to school-hall audiences." },
+  { t: "Admissions expertise", d: "Working knowledge of admission regulations and the full programme catalogue." },
 ];
 
 const PROMOTER_EVENTS = [
   {
     idx: "01",
     title: "Campus Tour & Experience Day",
-    meta: "2025 · HCM Campus · Host & Coordinator",
-    desc: "Full-day campus programme for visiting high-school groups — welcome desk, " +
-          "faculty seminars, facility tour and the closing group photo. I ran the room " +
-          "during talks, guided cohorts between stops and kept the schedule on track.",
-    tags: ["Event hosting", "Group guiding", "Run-through"],
+    meta: "2025 · HCM Campus · Planner & Host",
+    desc: "Our flagship in-school experience programme, built to let high-school students " +
+          "spend a full day inside the university — welcome desk, faculty seminars, facility " +
+          "tour and closing group photo. I planned the run-of-show, hosted the hall during " +
+          "talks and guided cohorts between stops. <b>Over 3,000 students</b> have been through it.",
+    tags: ["Programme planning", "Event hosting", "Group guiding"],
     gallery: [
       "assets/gallery/promoter/ct6.jpg","assets/gallery/promoter/ct4.jpg",
       "assets/gallery/promoter/ct5.jpg","assets/gallery/promoter/ct2.jpg",
@@ -54,11 +62,12 @@ const PROMOTER_EVENTS = [
   {
     idx: "02",
     title: "AI & Robotics Challenge",
-    meta: "2025 · Regional Robotics Round · Event Support",
-    desc: "Regional robotics competition hosted at the campus. I covered build-hall setup, " +
-          "team check-in and arena-side coordination across the qualifying and final rounds, " +
-          "then handled the award ceremony line-up.",
-    tags: ["Venue setup", "Team check-in", "Stage coordination"],
+    meta: "2025 · Regional Robotics Round · Coordinator",
+    desc: "Regional robotics competition hosted on campus, drawing school teams from across " +
+          "the city. I handled logistics and staffing — build-hall setup, team check-in, " +
+          "arena-side coordination through the qualifying and final rounds, then the award " +
+          "ceremony line-up.",
+    tags: ["Logistics", "Staffing", "Stage coordination"],
     gallery: [
       "assets/gallery/promoter/ai3.jpg","assets/gallery/promoter/ai5.jpg",
       "assets/gallery/promoter/ai2.jpg","assets/gallery/promoter/ai4.jpg",
@@ -68,11 +77,12 @@ const PROMOTER_EVENTS = [
   {
     idx: "03",
     title: "Ngày hội tuyển sinh",
-    meta: "2024 — 2025 · Admissions Fair · Consultant",
-    desc: "Admissions fairs across the city. Front-of-booth consulting: walking students and " +
-          "parents through majors, admission routes and the scholarship scheme, one conversation " +
-          "at a time, from opening to pack-down.",
-    tags: ["1-on-1 consulting", "Booth operation", "Scholarship advising"],
+    meta: "2024 — 2025 · Career Forums · Consultant",
+    desc: "Career forums and admissions fairs held at high schools across Ho Chi Minh City — " +
+          "<b>more than 30 schools</b> to date. Front-of-booth consulting: walking students and " +
+          "parents through majors, admission regulations and the scholarship scheme, one " +
+          "conversation at a time, from opening to pack-down.",
+    tags: ["1-on-1 consulting", "Public speaking", "Admission regulations"],
     gallery: [
       "assets/gallery/promoter/nh1.jpg","assets/gallery/promoter/nh3.jpg",
       "assets/gallery/promoter/nh2.jpg","assets/gallery/promoter/nh4.jpg",

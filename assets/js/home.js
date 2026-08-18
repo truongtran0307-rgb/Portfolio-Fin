@@ -32,11 +32,14 @@ function animateCount(el){
   if(el.dataset.done) return;
   el.dataset.done = '1';
   const target = parseInt(el.dataset.count, 10);
+  // Dấu phân cách nghìn: 3000 -> "3,000". Số bốn chữ số trở lên rất khó đọc
+  // nếu để trần, mà đây lại đúng là những con số cần người xem nhớ.
+  const fmt = n => n.toLocaleString('en-US');
   const dur = 800; const t0 = performance.now();
   function step(t){
     const p = Math.min((t - t0) / dur, 1);
-    el.textContent = Math.floor(p * target);
-    if(p < 1) requestAnimationFrame(step); else el.textContent = target;
+    el.textContent = fmt(Math.floor(p * target));
+    if(p < 1) requestAnimationFrame(step); else el.textContent = fmt(target);
   }
   requestAnimationFrame(step);
 }

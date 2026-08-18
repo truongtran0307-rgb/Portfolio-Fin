@@ -37,9 +37,37 @@ assets/js/home.js / project.js  logic từng trang
 
 ## Đang treo
 
-- `PROMOTER_PUBLISHED = false` trong `promoter-data.js` — phần Promoter đang
-  ẩn hoàn toàn. Fiin còn phải thay số liệu thật (hiện là số ước lượng) và
-  duyệt lại mô tả ba sự kiện trước khi đổi thành `true`.
+- `PROMOTER_PUBLISHED = false` trong `promoter-data.js` — phần Promoter vẫn
+  đang ẩn, chờ Fiin duyệt trước khi bật thành `true`.
+
+## Thông tin nền cho phần Promoter
+
+Portfolio này còn phục vụ việc ứng tuyển vị trí **Admissions Promoter /
+Chuyên viên Tư vấn Tuyển sinh**. Khi viết nội dung cho phần Promoter, bám vào:
+
+**Phạm vi công việc**
+
+- Tổ chức và triển khai hoạt động tuyển sinh tại các trường THPT ở TP.HCM
+- Trực tiếp tư vấn ngành nghề, chương trình đào tạo, quy chế tuyển sinh tại
+  các diễn đàn hướng nghiệp
+- Lên kế hoạch và tổ chức sự kiện trải nghiệm: Campus Tour, Experience Day
+- Điều phối các sự kiện tuyển sinh khác — hậu cần, nhân sự, truyền thông
+
+**Số liệu** (đã dùng trong `PROMOTER_STATS`)
+
+- Hơn 30 trường THPT tại TP.HCM
+- Hơn 3.000 học sinh tham gia Campus Tour & Experience Day
+- Từ 2023 đến nay
+
+**Kỹ năng nổi bật**
+
+- Tư vấn & giao tiếp với học sinh, phụ huynh
+- Tổ chức sự kiện, điều phối chương trình
+- Thuyết trình trước đám đông
+- Am hiểu quy chế tuyển sinh và ngành nghề đào tạo
+
+**Giọng văn:** ngắn gọn, chuyên nghiệp, tự tin nhưng không phô trương. Có số
+liệu cụ thể ở đâu thì đưa vào đó. Không thổi phồng, không dùng tính từ rỗng.
 
 ## Thói quen viết code ở repo này
 

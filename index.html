@@ -213,8 +213,8 @@
           <div class="tl-org">FPT University — Full-time Collaborator</div>
           <div class="tl-desc">
             <p><b>Event visual design:</b> key visuals, backdrops, banners and standees for seminars, seasonal campaigns and award ceremonies.</p>
-            <p><b>Event coordination:</b> logistics planning, venue setup and on-site run-through to keep programmes on schedule.</p>
-            <p><b>Admissions communication:</b> advising thousands of high-school students and parents on programmes and career pathways.</p>
+            <p><b>Event coordination:</b> planning and running Campus Tour and Experience Day programmes — logistics, staffing and on-site run-through. Over <b>3,000 students</b> hosted.</p>
+            <p><b>Admissions communication:</b> career forums at more than <b>30 high schools</b> across Ho Chi Minh City, advising students and parents on majors, programmes and admission regulations.</p>
           </div>
         </div>
       </div>
@@ -357,6 +357,16 @@
   <!-- Các khối sự kiện được dựng bằng JS từ PROMOTER_EVENTS -->
   <div id="pm-events"></div>
 
+  <section class="plate pm-skills-plate">
+    <div class="wrap">
+      <div class="plate-head reveal">
+        <div class="tag">07 / SKILLS</div>
+        <h2>What I bring</h2>
+      </div>
+      <div class="pm-skills" id="pm-skills"></div>
+    </div>
+  </section>
+
   <footer>
     <span>QUANG TRUONG / PROMOTER</span>
     <span>SEE YOU SOON</span>
@@ -459,6 +469,13 @@ if(!PROMOTER_PUBLISHED){
       </div>
     </section>`;
   }).join('');
+
+  document.getElementById('pm-skills').innerHTML = PROMOTER_SKILLS.map((s, i) => `
+    <div class="pm-skill reveal">
+      <div class="pm-skill-n mono">${String(i + 1).padStart(2, '0')}</div>
+      <div class="pm-skill-t">${s.t}</div>
+      <p class="pm-skill-d">${s.d}</p>
+    </div>`).join('');
 
   /* ---- Xem ảnh phóng to ---- */
   (function initPromoterLightbox(){
