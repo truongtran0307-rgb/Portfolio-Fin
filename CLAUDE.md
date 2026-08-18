@@ -35,10 +35,10 @@ assets/js/promoter-data.js  nội dung phần Promoter + công tắc công bố
 assets/js/home.js / project.js  logic từng trang
 ```
 
-## Đang treo
+## Trạng thái
 
-- `PROMOTER_PUBLISHED = false` trong `promoter-data.js` — phần Promoter vẫn
-  đang ẩn, chờ Fiin duyệt trước khi bật thành `true`.
+- `PROMOTER_PUBLISHED = true` — phần Promoter đã công bố (18/08/2026).
+  Muốn ẩn lại thì đổi về `false`, cả tab 02 lẫn nội dung sẽ bị gỡ khỏi trang.
 
 ## Thông tin nền cho phần Promoter
 

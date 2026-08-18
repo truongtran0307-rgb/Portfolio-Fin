@@ -19,7 +19,7 @@
    ║  Khi đã sửa xong số liệu + mô tả bên dưới, đổi false → true,     ║
    ║  lưu file, rồi đẩy lên GitHub là trang tự hiện ra.               ║
    ╚══════════════════════════════════════════════════════════════════╝ */
-const PROMOTER_PUBLISHED = false;
+const PROMOTER_PUBLISHED = true;
 
 const PROMOTER_INTRO =
   "Beyond the design desk, I run admissions activity for FPT University across Ho Chi Minh City — " +
