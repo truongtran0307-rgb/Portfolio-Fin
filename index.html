@@ -136,10 +136,21 @@
     <span data-i18n="hero.meta3">SELECTION / 2026</span>
   </div>
 
+  <!-- Ba lớp chồng nhau: số nền → chân dung → chữ tiền cảnh.
+       Chân dung nằm GIỮA nên số 03.07 bị người che một phần, còn chữ
+       "PORTFOLIO" thì đè lên người — đó là cái tạo ra chiều sâu.
+       Mỗi lớp trôi một tốc độ khác nhau khi cuộn (biến --p ở home.js). -->
   <div class="hero-panel" data-fx="hero" data-fx-mode="exit">
     <div class="corner-tick a">PT-01</div>
     <div class="corner-tick b">© 2026</div>
-    <h1 data-i18n="hero.title">Port<br>folio 2026</h1>
+
+    <div class="hero-stack">
+      <div class="hero-num mono" aria-hidden="true">03.07</div>
+      <img class="hero-cut" src="assets/img/hero/portrait-cut.png"
+           width="485" height="1150" alt="Quang Truong" fetchpriority="high">
+      <h1 class="hero-fore" data-i18n="hero.title">Port<br>folio 2026</h1>
+    </div>
+
     <div class="role grot" data-i18n="hero.role">By Quang Truong — Designer &amp; Creative Marketer</div>
     <p class="sub" data-i18n="hero.sub">I blend visual storytelling, digital design, and creative marketing into compelling brand experiences.</p>
   </div>
@@ -181,7 +192,7 @@
             <div class="ruler-v"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
             <img src="assets/img/hero/portrait.jpg" alt="Quang Truong">
           </div>
-          <div class="portrait-cap mono"><span>QUANG TRUONG</span><span>BW / 5×4</span></div>
+          <div class="portrait-cap mono"><span>QUANG TRUONG</span><span>COLOR / 5×4</span></div>
         </div>
       </div>
 
@@ -190,6 +201,7 @@
           <div class="fact"><div class="k" data-i18n="about.k.education">Education</div><div class="v"><span data-i18n="about.k.fptu">FPT University</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.gdda">Graphic Design and Digital Art</span></div></div>
           <div class="fact"><div class="k" data-i18n="about.k.freelancer">Freelancer</div><div class="v"><span data-i18n="about.v.gdda2">Graphic Design &amp; Digital Art</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.present">present</span></div></div>
           <div class="fact"><div class="k" data-i18n="about.k.fptu">FPT University</div><div class="v"><span data-i18n="about.v.officer">Admissions Officer</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.officerNote">2023 — present · Full-time Collaborator</span></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.born">Born</div><div class="v" data-i18n="about.v.born">03.07.2001</div></div>
           <div class="fact"><div class="k" data-i18n="about.k.based">Based in</div><div class="v" data-i18n="about.v.vietnam">Vietnam</div></div>
           <div class="fact"><div class="k" data-i18n="about.k.email">Email</div><div class="v"><a href="mailto:truongtran0307@gmail.com">truongtran0307@gmail.com</a></div></div>
           <div class="fact"><div class="k" data-i18n="about.k.phone">Phone</div><div class="v"><a href="tel:+84905053957">+84 905 053 957</a></div></div>
