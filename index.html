@@ -23,6 +23,17 @@
 <!-- Bật màn chờ NGAY từ <head>, trước khi trang kịp vẽ, để không thấy nội dung
      nhấp nháy một nhịp rồi mới bị che. Máy chặn JS sẽ bỏ qua dòng này nên
      không bao giờ bị kẹt ở màn chờ. -->
+<!-- Đặt chủ đề + ngôn ngữ NGAY tại <head>, trước khi trang kịp vẽ.
+     Nếu đợi tới lúc JS cuối trang chạy, người chọn nền sáng sẽ thấy trang
+     loé đen một nhịp rồi mới trắng ra. -->
+<script>
+  try{
+    if(localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+    var _l = localStorage.getItem('lang');
+    if(_l === 'vi' || _l === 'en') document.documentElement.lang = _l;
+  }catch(e){}
+</script>
+
 <script>document.documentElement.classList.add('preloading');</script>
 
 <!-- Rê chuột vào link dự án -> trình duyệt âm thầm dựng sẵn trang đó.
@@ -41,7 +52,7 @@
 <!-- Màn chờ: đếm theo số ảnh đã tải xong thật, không phải đồng hồ giả -->
 <div class="preloader" id="preloader" role="status" aria-live="polite">
   <div class="pre-inner">
-    <div class="pre-label mono">LOADING REEL</div>
+    <div class="pre-label mono" data-i18n="pre.label">LOADING REEL</div>
     <div class="pre-num mono"><span id="preNum">000</span><small>%</small></div>
     <div class="pre-bar"><i id="preBar"></i></div>
     <div class="pre-meta mono"><span>PORTFOLIO 2026</span><span>T.Q.TRƯỜNG</span></div>
@@ -73,28 +84,39 @@
 </div>
 <div class="edge-label left mono">PORTFOLIO 2026 — BRANDING / EVENT VISUAL / MOTION</div>
 <div class="edge-label right mono">SELECTION / 2026 — BY QUANG TRUONG</div>
+<!-- Thanh màu mẫu: lấy thẳng từ biến chủ đề nên tự đảo khi bật nền sáng -->
 <div class="swatchbar">
-  <i style="background:#0A0A0A;border:1px solid #333"></i>
-  <i style="background:#D7F53A"></i>
-  <i style="background:#3FC6D6"></i>
-  <i style="background:#F2EFE4"></i>
-  <i style="background:#8A8471"></i>
+  <i style="background:var(--paper);border:1px solid var(--line-strong)"></i>
+  <i style="background:var(--acid)"></i>
+  <i style="background:var(--teal)"></i>
+  <i style="background:var(--off)"></i>
+  <i style="background:var(--muted)"></i>
 </div>
 
 <div class="topbar">
   <div class="rec mono"><span class="rec-dot"></span>REC <span id="tc">00:00:00:00</span></div>
   <div class="brand grot">T.Q.TRƯỜNG</div>
-  <div class="mono" id="clock">HCMC — --:--</div>
+  <div class="topbar-right">
+    <div class="mono" id="clock">HCMC — --:--</div>
+    <div class="switches">
+      <button class="sw mono" id="swTheme" type="button" data-i18n-attr="title:ui.theme.title" title="Switch to light mode">
+        <span class="sw-ico" aria-hidden="true"></span><span class="sw-txt" data-i18n="ui.theme.toLight">LIGHT</span>
+      </button>
+      <button class="sw mono" id="swLang" type="button" data-i18n-attr="title:ui.lang.title" title="Chuyển sang tiếng Việt">
+        <span class="sw-txt" data-i18n="ui.lang">VI</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="tabs wrap">
   <button class="tab-btn active" data-page="design" type="button">
     <span class="tab-idx mono">01</span>
-    <span class="tab-txt">WORK<small>Selection / 2026</small></span>
+    <span class="tab-txt"><span data-i18n="nav.work">WORK</span><small data-i18n="nav.work.sub">Selection / 2026</small></span>
   </button>
   <button class="tab-btn" data-page="promoter" type="button">
     <span class="tab-idx mono">02</span>
-    <span class="tab-txt">PROMOTER<small>FPT University</small></span>
+    <span class="tab-txt"><span data-i18n="nav.promoter">PROMOTER</span><small data-i18n="nav.promoter.sub">FPT University</small></span>
   </button>
 </div>
 
@@ -102,24 +124,24 @@
 
 <div class="ticker">
   <div class="ticker-track">
-    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
-    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+    <span data-i18n="tick.branding"><b>BRANDING</b></span><span data-i18n="tick.eventVisual"><b>EVENT</b> VISUAL</span><span data-i18n="tick.motion"><b>MOTION</b></span><span data-i18n="tick.uiux">UI / UX DESIGN</span><span data-i18n="tick.illus">DIGITAL ILLUSTRATION</span><span data-i18n="tick.character">CHARACTER DESIGN</span><span data-i18n="tick.packaging">PACKAGING</span>
+    <span data-i18n="tick.branding"><b>BRANDING</b></span><span data-i18n="tick.eventVisual"><b>EVENT</b> VISUAL</span><span data-i18n="tick.motion"><b>MOTION</b></span><span data-i18n="tick.uiux">UI / UX DESIGN</span><span data-i18n="tick.illus">DIGITAL ILLUSTRATION</span><span data-i18n="tick.character">CHARACTER DESIGN</span><span data-i18n="tick.packaging">PACKAGING</span>
   </div>
 </div>
 
 <section class="hero wrap">
   <div class="hero-meta mono">
-    <span>PORTFOLIO <b>2026</b></span>
-    <span>BRANDING / EVENT VISUAL / MOTION</span>
-    <span>SELECTION / 2026</span>
+    <span data-i18n="hero.meta1">PORTFOLIO <b>2026</b></span>
+    <span data-i18n="hero.meta2">BRANDING / EVENT VISUAL / MOTION</span>
+    <span data-i18n="hero.meta3">SELECTION / 2026</span>
   </div>
 
   <div class="hero-panel" data-fx="hero" data-fx-mode="exit">
     <div class="corner-tick a">PT-01</div>
     <div class="corner-tick b">© 2026</div>
-    <h1>Port<br>folio 2026</h1>
-    <div class="role grot">By Quang Truong — Designer &amp; Creative Marketer</div>
-    <p class="sub">I blend visual storytelling, digital design, and creative marketing into compelling brand experiences.</p>
+    <h1 data-i18n="hero.title">Port<br>folio 2026</h1>
+    <div class="role grot" data-i18n="hero.role">By Quang Truong — Designer &amp; Creative Marketer</div>
+    <p class="sub" data-i18n="hero.sub">I blend visual storytelling, digital design, and creative marketing into compelling brand experiences.</p>
   </div>
 
   <div class="hero-foot">
@@ -128,15 +150,15 @@
     </div>
     <div class="qr-block">
       <img src="assets/img/hero/qr_behance.png" alt="QR Behance">
-      <div class="qr-txt">SCAN →<br><b>BEHANCE PORTFOLIO</b><br>/254056325</div>
+      <div class="qr-txt" data-i18n="hero.qr">SCAN →<br><b>BEHANCE PORTFOLIO</b><br>/254056325</div>
     </div>
   </div>
 </section>
 
 <div class="ticker flip">
   <div class="ticker-track">
-    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
-    <span><b>BRANDING</b></span><span><b>EVENT</b> VISUAL</span><span><b>MOTION</b></span><span>UI / UX DESIGN</span><span>DIGITAL ILLUSTRATION</span><span>CHARACTER DESIGN</span><span>PACKAGING</span>
+    <span data-i18n="tick.branding"><b>BRANDING</b></span><span data-i18n="tick.eventVisual"><b>EVENT</b> VISUAL</span><span data-i18n="tick.motion"><b>MOTION</b></span><span data-i18n="tick.uiux">UI / UX DESIGN</span><span data-i18n="tick.illus">DIGITAL ILLUSTRATION</span><span data-i18n="tick.character">CHARACTER DESIGN</span><span data-i18n="tick.packaging">PACKAGING</span>
+    <span data-i18n="tick.branding"><b>BRANDING</b></span><span data-i18n="tick.eventVisual"><b>EVENT</b> VISUAL</span><span data-i18n="tick.motion"><b>MOTION</b></span><span data-i18n="tick.uiux">UI / UX DESIGN</span><span data-i18n="tick.illus">DIGITAL ILLUSTRATION</span><span data-i18n="tick.character">CHARACTER DESIGN</span><span data-i18n="tick.packaging">PACKAGING</span>
   </div>
 </div>
 
@@ -144,15 +166,15 @@
   <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
   <div class="wrap">
     <div class="plate-head reveal">
-      <div class="tag">01 / ABOUT</div>
-      <h2 data-fx="drift">About</h2>
+      <div class="tag" data-i18n="about.tag">01 / ABOUT</div>
+      <h2 data-fx="drift" data-i18n="about.h">About</h2>
     </div>
     <div class="about-grid">
       <div class="about-text reveal">
-        <p>I'm <b>Quang Truong</b>, a multidisciplinary designer and creative marketer exploring the intersection of UI/UX, digital illustration, and event experiences.</p>
-        <p>Based in Vietnam, my journey is shaped by a balance of technical structure and artistic exploration — from designing interactive user interfaces to character concepts.</p>
-        <p>I work across UI/UX design, digital painting, character design, and educational marketing. Influenced by dynamic eSports visuals, immersive storytelling, and disciplined execution, my goal is to create visual systems that are strategically clear, highly functional, and emotionally engaging.</p>
-        <p><b>I love bold visual concepts, rich textures, character storytelling, and challenges that push creative boundaries.</b></p>
+        <p data-i18n="about.p1">I'm <b>Quang Truong</b>, a multidisciplinary designer and creative marketer exploring the intersection of UI/UX, digital illustration, and event experiences.</p>
+        <p data-i18n="about.p2">Based in Vietnam, my journey is shaped by a balance of technical structure and artistic exploration — from designing interactive user interfaces to character concepts.</p>
+        <p data-i18n="about.p3">I work across UI/UX design, digital painting, character design, and educational marketing. Influenced by dynamic eSports visuals, immersive storytelling, and disciplined execution, my goal is to create visual systems that are strategically clear, highly functional, and emotionally engaging.</p>
+        <p data-i18n="about.p4"><b>I love bold visual concepts, rich textures, character storytelling, and challenges that push creative boundaries.</b></p>
 
         <div class="portrait-box">
           <div class="portrait-frame" data-fx="portrait">
@@ -165,12 +187,12 @@
 
       <div class="reveal">
         <div class="fact-list">
-          <div class="fact"><div class="k">Education</div><div class="v">FPT University<br><span style="opacity:.6;font-weight:500">Graphic Design and Digital Art</span></div></div>
-          <div class="fact"><div class="k">Freelancer</div><div class="v">Graphic Design &amp; Digital Art<br><span style="opacity:.6;font-weight:500">present</span></div></div>
-          <div class="fact"><div class="k">FPT University</div><div class="v">Admissions Officer<br><span style="opacity:.6;font-weight:500">2023 — present · Full-time Collaborator</span></div></div>
-          <div class="fact"><div class="k">Based in</div><div class="v">Vietnam</div></div>
-          <div class="fact"><div class="k">Email</div><div class="v"><a href="mailto:truongtran0307@gmail.com">truongtran0307@gmail.com</a></div></div>
-          <div class="fact"><div class="k">Phone</div><div class="v"><a href="tel:+84905053957">+84 905 053 957</a></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.education">Education</div><div class="v"><span data-i18n="about.k.fptu">FPT University</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.gdda">Graphic Design and Digital Art</span></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.freelancer">Freelancer</div><div class="v"><span data-i18n="about.v.gdda2">Graphic Design &amp; Digital Art</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.present">present</span></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.fptu">FPT University</div><div class="v"><span data-i18n="about.v.officer">Admissions Officer</span><br><span style="opacity:.6;font-weight:500" data-i18n="about.v.officerNote">2023 — present · Full-time Collaborator</span></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.based">Based in</div><div class="v" data-i18n="about.v.vietnam">Vietnam</div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.email">Email</div><div class="v"><a href="mailto:truongtran0307@gmail.com">truongtran0307@gmail.com</a></div></div>
+          <div class="fact"><div class="k" data-i18n="about.k.phone">Phone</div><div class="v"><a href="tel:+84905053957">+84 905 053 957</a></div></div>
         </div>
       </div>
     </div>
@@ -181,8 +203,8 @@
   <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
   <div class="wrap wrap--wide">
     <div class="plate-head reveal">
-      <div class="tag">02 / SELECTED WORK</div>
-      <h2 data-fx="drift">Projects</h2>
+      <div class="tag" data-i18n="work.tag">02 / SELECTED WORK</div>
+      <h2 data-fx="drift" data-i18n="work.h">Projects</h2>
     </div>
     <div class="dotgrid reveal" data-fx="grid">
       <div class="reel-strip" id="reel-strip"></div>
@@ -194,34 +216,34 @@
   <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
   <div class="wrap">
     <div class="plate-head reveal">
-      <div class="tag">03 / EXPERIENCE</div>
-      <h2 data-fx="drift">Experience</h2>
+      <div class="tag" data-i18n="exp.tag">03 / EXPERIENCE</div>
+      <h2 data-fx="drift" data-i18n="exp.h">Experience</h2>
     </div>
     <div class="reveal">
       <div class="tl-row">
-        <div class="tl-when mono">PRESENT</div>
+        <div class="tl-when mono" data-i18n="exp.when.present">PRESENT</div>
         <div>
-          <div class="tl-role">Freelancer</div>
+          <div class="tl-role" data-i18n="exp.freelancer">Freelancer</div>
           <div class="tl-org">Graphic Design and Digital Art</div>
-          <div class="tl-desc"><p>Brand identity, packaging, key visual and illustration work for independent clients — from logo construction through to print-ready artwork.</p></div>
+          <div class="tl-desc"><p data-i18n="exp.freelancer.desc">Brand identity, packaging, key visual and illustration work for independent clients — from logo construction through to print-ready artwork.</p></div>
         </div>
       </div>
       <div class="tl-row">
-        <div class="tl-when mono">2023 — PRESENT</div>
+        <div class="tl-when mono" data-i18n="exp.when.since2023">2023 — PRESENT</div>
         <div>
-          <div class="tl-role">Admissions Officer</div>
-          <div class="tl-org">FPT University — Full-time Collaborator</div>
+          <div class="tl-role" data-i18n="about.v.officer">Admissions Officer</div>
+          <div class="tl-org" data-i18n="exp.officer.org">FPT University — Full-time Collaborator</div>
           <div class="tl-desc">
-            <p><b>Event visual design:</b> key visuals, backdrops, banners and standees for seminars, seasonal campaigns and award ceremonies.</p>
-            <p><b>Event coordination:</b> planning and running Campus Tour and Experience Day programmes — logistics, staffing and on-site run-through. Over <b>3,000 students</b> hosted.</p>
-            <p><b>Admissions communication:</b> career forums at more than <b>30 high schools</b> across Ho Chi Minh City, advising students and parents on majors, programmes and admission regulations.</p>
+            <p data-i18n="exp.officer.d1"><b>Event visual design:</b> key visuals, backdrops, banners and standees for seminars, seasonal campaigns and award ceremonies.</p>
+            <p data-i18n="exp.officer.d2"><b>Event coordination:</b> planning and running Campus Tour and Experience Day programmes — logistics, staffing and on-site run-through. Over <b>3,000 students</b> hosted.</p>
+            <p data-i18n="exp.officer.d3"><b>Admissions communication:</b> career forums at more than <b>30 high schools</b> across Ho Chi Minh City, advising students and parents on majors, programmes and admission regulations.</p>
           </div>
         </div>
       </div>
       <div class="tl-row">
-        <div class="tl-when mono">EDUCATION</div>
+        <div class="tl-when mono" data-i18n="exp.when.education">EDUCATION</div>
         <div>
-          <div class="tl-role">FPT University</div>
+          <div class="tl-role" data-i18n="about.k.fptu">FPT University</div>
           <div class="tl-org">Graphic Design and Digital Art</div>
         </div>
       </div>
@@ -233,16 +255,16 @@
   <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
   <div class="wrap">
     <div class="plate-head reveal">
-      <div class="tag">04 / SKILLS</div>
-      <h2 data-fx="drift">Technical skill</h2>
+      <div class="tag" data-i18n="skill.tag">04 / SKILLS</div>
+      <h2 data-fx="drift" data-i18n="skill.h">Technical skill</h2>
     </div>
     <div class="skill-grid reveal">
       <div class="skill-col">
-        <h3>Design</h3>
-        <ul><li>Brand identity &amp; logo</li><li>Packaging design</li><li>Event key visual</li><li>Editorial &amp; layout</li><li>UI/UX design</li><li>Character design</li></ul>
+        <h3 data-i18n="skill.col.design">Design</h3>
+        <ul><li data-i18n="skill.d1">Brand identity &amp; logo</li><li data-i18n="skill.d2">Packaging design</li><li data-i18n="skill.d3">Event key visual</li><li data-i18n="skill.d4">Editorial &amp; layout</li><li data-i18n="skill.d5">UI/UX design</li><li data-i18n="skill.d6">Character design</li></ul>
       </div>
       <div class="skill-col">
-        <h3>Software</h3>
+        <h3 data-i18n="skill.col.software">Software</h3>
         <!-- Thẻ phần mềm 3D: mặt trước là icon, lật lại là công việc dùng nó -->
         <div class="app-deck">
           <div class="app-card" style="--d:0">
@@ -251,7 +273,7 @@
                 <img class="app-mark" src="assets/img/skills/ai.png" width="220" height="220" alt="">
                 <span class="app-name">Illustrator</span>
               </div>
-              <div class="app-face app-back"><span>Logo, packaging<br>&amp; vector artwork</span></div>
+              <div class="app-face app-back"><span data-i18n="skill.ai.use">Logo, packaging<br>&amp; vector artwork</span></div>
             </div>
           </div>
           <div class="app-card" style="--d:1">
@@ -260,7 +282,7 @@
                 <img class="app-mark" src="assets/img/skills/ps.png" width="220" height="220" alt="">
                 <span class="app-name">Photoshop</span>
               </div>
-              <div class="app-face app-back"><span>Key visual,<br>retouch &amp; matte</span></div>
+              <div class="app-face app-back"><span data-i18n="skill.ps.use">Key visual,<br>retouch &amp; matte</span></div>
             </div>
           </div>
           <div class="app-card" style="--d:2">
@@ -269,7 +291,7 @@
                 <img class="app-mark" src="assets/img/skills/ae.png" width="220" height="220" alt="">
                 <span class="app-name">After Effects</span>
               </div>
-              <div class="app-face app-back"><span>Motion graphics<br>&amp; compositing</span></div>
+              <div class="app-face app-back"><span data-i18n="skill.ae.use">Motion graphics<br>&amp; compositing</span></div>
             </div>
           </div>
           <div class="app-card" style="--d:3">
@@ -278,7 +300,7 @@
                 <img class="app-mark" src="assets/img/skills/figma.png" width="220" height="220" alt="">
                 <span class="app-name">Figma</span>
               </div>
-              <div class="app-face app-back"><span>UI layout<br>&amp; design systems</span></div>
+              <div class="app-face app-back"><span data-i18n="skill.fig.use">UI layout<br>&amp; design systems</span></div>
             </div>
           </div>
           <div class="app-card" style="--d:4">
@@ -287,14 +309,14 @@
                 <span class="app-mono mono">Pr</span>
                 <span class="app-name">Premiere Pro</span>
               </div>
-              <div class="app-face app-back"><span>Edit, grade<br>&amp; sound sync</span></div>
+              <div class="app-face app-back"><span data-i18n="skill.pr.use">Edit, grade<br>&amp; sound sync</span></div>
             </div>
           </div>
         </div>
       </div>
       <div class="skill-col">
-        <h3>Craft</h3>
-        <ul><li>Digital painting</li><li>Vector illustration</li><li>Visual development</li><li>Storyboard &amp; animatic</li><li>Motion graphics</li><li>Creative marketing</li></ul>
+        <h3 data-i18n="skill.col.craft">Craft</h3>
+        <ul><li data-i18n="skill.c1">Digital painting</li><li data-i18n="skill.c2">Vector illustration</li><li data-i18n="skill.c3">Visual development</li><li data-i18n="skill.c4">Storyboard &amp; animatic</li><li data-i18n="skill.c5">Motion graphics</li><li data-i18n="skill.c6">Creative marketing</li></ul>
       </div>
     </div>
   </div>
@@ -303,8 +325,8 @@
 <section class="plate contact" id="contact">
   <div class="wrap">
     <div class="contact-inner reveal">
-      <div class="tag mono">05 / CONTACT</div>
-      <h2>Thanks for<br>watching!</h2>
+      <div class="tag mono" data-i18n="contact.tag">05 / CONTACT</div>
+      <h2 data-i18n="contact.h">Thanks for<br>watching!</h2>
       <div class="contact-links">
         <a class="bracket" href="mailto:truongtran0307@gmail.com">✉ truongtran0307@gmail.com</a>
         <a class="bracket" href="tel:+84905053957">☎ +84 905 053 957</a>
@@ -317,14 +339,14 @@
 
 <div class="ticker">
   <div class="ticker-track">
-    <span>© 2026 QUANG TRUONG</span><span>SEE YOU SOON</span><span>PORTFOLIO 2026</span>
-    <span>© 2026 QUANG TRUONG</span><span>SEE YOU SOON</span><span>PORTFOLIO 2026</span>
+    <span>© 2026 QUANG TRUONG</span><span data-i18n="tick.seeyou">SEE YOU SOON</span><span>PORTFOLIO 2026</span>
+    <span>© 2026 QUANG TRUONG</span><span data-i18n="tick.seeyou">SEE YOU SOON</span><span>PORTFOLIO 2026</span>
   </div>
 </div>
 
 <footer>
   <span>QUANG TRUONG / PORTFOLIO 2026</span>
-  <span>SEE YOU SOON</span>
+  <span data-i18n="tick.seeyou">SEE YOU SOON</span>
 </footer>
 
 </div><!-- /#page-design -->
@@ -336,8 +358,8 @@
     <div class="plate-frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
     <div class="wrap">
       <div class="plate-head reveal">
-        <div class="tag">06 / PROMOTER</div>
-        <h2>Promoter at FPT</h2>
+        <div class="tag" data-i18n="pm.tag">06 / PROMOTER</div>
+        <h2 data-i18n="pm.h">Promoter at FPT</h2>
       </div>
 
       <div class="pm-open-body">
@@ -349,8 +371,8 @@
 
   <div class="ticker">
     <div class="ticker-track">
-      <span><b>ADMISSIONS</b></span><span>CAMPUS <b>TOUR</b></span><span><b>EVENT</b> HOSTING</span><span>STUDENT CONSULTING</span><span>ON-SITE COORDINATION</span>
-      <span><b>ADMISSIONS</b></span><span>CAMPUS <b>TOUR</b></span><span><b>EVENT</b> HOSTING</span><span>STUDENT CONSULTING</span><span>ON-SITE COORDINATION</span>
+      <span data-i18n="tick.admissions"><b>ADMISSIONS</b></span><span data-i18n="tick.campusTour">CAMPUS <b>TOUR</b></span><span data-i18n="tick.hosting"><b>EVENT</b> HOSTING</span><span data-i18n="tick.consulting">STUDENT CONSULTING</span><span data-i18n="tick.onsite">ON-SITE COORDINATION</span>
+      <span data-i18n="tick.admissions"><b>ADMISSIONS</b></span><span data-i18n="tick.campusTour">CAMPUS <b>TOUR</b></span><span data-i18n="tick.hosting"><b>EVENT</b> HOSTING</span><span data-i18n="tick.consulting">STUDENT CONSULTING</span><span data-i18n="tick.onsite">ON-SITE COORDINATION</span>
     </div>
   </div>
 
@@ -360,16 +382,16 @@
   <section class="plate pm-skills-plate">
     <div class="wrap">
       <div class="plate-head reveal">
-        <div class="tag">07 / SKILLS</div>
-        <h2>What I bring</h2>
+        <div class="tag" data-i18n="pm.skills.tag">07 / SKILLS</div>
+        <h2 data-i18n="pm.skills.h">What I bring</h2>
       </div>
       <div class="pm-skills" id="pm-skills"></div>
     </div>
   </section>
 
   <footer>
-    <span>QUANG TRUONG / PROMOTER</span>
-    <span>SEE YOU SOON</span>
+    <span data-i18n="pm.footer">QUANG TRUONG / PROMOTER</span>
+    <span data-i18n="tick.seeyou">SEE YOU SOON</span>
   </footer>
 
 </div><!-- /#page-promoter -->
@@ -383,15 +405,17 @@
   <div class="lb-counter mono" id="lbCounter"></div>
 </div>
 
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/projects-data.js"></script>
 <script>
   // Sinh tile dự án trực tiếp từ PROJECTS (projects-data.js) —
   // thêm/sửa dự án chỉ cần sửa 1 chỗ duy nhất, không phải đụng vào index.html.
-  const reelStrip = document.getElementById('reel-strip');
-  reelStrip.innerHTML = PROJECTS.map((p, i) => `
+  // tf(p,'title') lấy title_vi khi đang ở tiếng Việt, không có thì rơi về title.
+  function renderTiles(){
+    document.getElementById('reel-strip').innerHTML = PROJECTS.map(p => `
     <div class="tile" data-slug="${p.slug}">
       <div class="tile-img">
-        <img class="tile-base" src="assets/img/tiles/${p.slug}.jpg" alt="${p.title}">
+        <img class="tile-base" src="assets/img/tiles/${p.slug}.jpg" alt="${tf(p,'title')}">
         <!-- Hai bản sao cùng file ảnh (trình duyệt dùng lại bản đã tải, không
              tốn thêm lượt tải). Khi rê chuột, mỗi bản chỉ giữ một dải màu rồi
              lệch đi vài pixel -> viền màu như tín hiệu video bị nhiễu. -->
@@ -403,14 +427,16 @@
       </div>
       <div class="tile-body">
         <div>
-          <div class="tile-kind mono">${p.kind}</div>
-          <div class="tile-title">${p.title}</div>
-          <div class="tile-desc">${p.sub}</div>
+          <div class="tile-kind mono">${tf(p,'kind')}</div>
+          <div class="tile-title">${tf(p,'title')}</div>
+          <div class="tile-desc">${tf(p,'sub')}</div>
         </div>
-        <a class="tile-cta bracket" href="project.html?p=${p.slug}">View project</a>
+        <a class="tile-cta bracket" href="project.html?p=${p.slug}">${t('nav.viewProject')}</a>
       </div>
     </div>
   `).join('');
+  }
+  renderTiles();
 </script>
 
 <script src="assets/js/promoter-data.js"></script>
@@ -427,96 +453,121 @@ if(!PROMOTER_PUBLISHED){
   document.getElementById('page-promoter').remove();
   document.querySelector('.tabs').classList.add('tabs--solo');
 } else {
-  document.getElementById('pm-lead').textContent = PROMOTER_INTRO;
-
-  document.getElementById('pm-stats').innerHTML = PROMOTER_STATS.map(s => `
-    <div class="pm-stat reveal">
-      <div class="pm-num"><span data-count="${s.n}">0</span>${s.suffix}</div>
-      <div class="pm-lbl">${s.label}</div>
-      <div class="pm-note mono">${s.note}</div>
-    </div>`).join('');
-
-  /* Ảnh ngang thì cho chiếm 2 cột, ảnh vuông/dọc 1 cột — lưới không bị lỗ hổng.
-     Ảnh đầu mỗi sự kiện luôn to nhất, đóng vai trò ảnh mở màn.               */
+  /* Ảnh của mọi sự kiện gộp thành một danh sách phẳng, để bấm ảnh nào cũng
+     xem tiếp được sang ảnh kế mà không phải nhảy giữa các khối. */
   const PM_ALL = [];
-  document.getElementById('pm-events').innerHTML = PROMOTER_EVENTS.map(ev => {
-    const items = ev.gallery.map((src, i) => {
-      const d = PROMOTER_SIZE[src];
-      const dim = d ? ` width="${d[0]}" height="${d[1]}"` : '';
-      const wide = i === 0 || (d && d[0] / d[1] >= 1.6);
-      PM_ALL.push(src);
-      const lb = PM_ALL.length - 1;
-      return `<figure class="pm-item reveal${wide ? ' is-wide' : ''}" data-lb="${lb}">
-          <img src="${src}"${dim} loading="lazy" decoding="async" alt="${ev.title} ${i + 1}">
-          <figcaption class="mono"><span>${ev.idx}·${String(i + 1).padStart(2, '0')}</span><span>${ev.title.toUpperCase()}</span></figcaption>
-        </figure>`;
+
+  function renderPromoter(){
+    PM_ALL.length = 0;
+    document.getElementById('pm-lead').textContent =
+      (typeof PROMOTER_INTRO_VI !== 'undefined' && LANG !== 'en') ? PROMOTER_INTRO_VI : PROMOTER_INTRO;
+
+    document.getElementById('pm-stats').innerHTML = PROMOTER_STATS.map(s => `
+      <div class="pm-stat reveal">
+        <div class="pm-num"><span data-count="${s.n}">0</span>${s.suffix}</div>
+        <div class="pm-lbl">${tf(s,'label')}</div>
+        <div class="pm-note mono">${tf(s,'note')}</div>
+      </div>`).join('');
+
+    /* Ảnh ngang thì cho chiếm 2 cột, ảnh vuông/dọc 1 cột — lưới không bị lỗ hổng.
+       Ảnh đầu mỗi sự kiện luôn to nhất, đóng vai trò ảnh mở màn.               */
+    document.getElementById('pm-events').innerHTML = PROMOTER_EVENTS.map(ev => {
+      const evTitle = tf(ev,'title');
+      const items = ev.gallery.map((src, i) => {
+        const d = PROMOTER_SIZE[src];
+        const dim = d ? ` width="${d[0]}" height="${d[1]}"` : '';
+        const wide = i === 0 || (d && d[0] / d[1] >= 1.6);
+        PM_ALL.push(src);
+        const lb = PM_ALL.length - 1;
+        return `<figure class="pm-item reveal${wide ? ' is-wide' : ''}" data-lb="${lb}">
+            <img src="${src}"${dim} loading="lazy" decoding="async" alt="${evTitle} ${i + 1}">
+            <figcaption class="mono"><span>${ev.idx}·${String(i + 1).padStart(2, '0')}</span><span>${evTitle.toUpperCase()}</span></figcaption>
+          </figure>`;
+      }).join('');
+
+      const tags = (tf(ev,'tags') || []).map(x => `<span>${x}</span>`).join('');
+
+      return `<section class="plate pm-event">
+        <div class="wrap">
+          <div class="pm-ev-head">
+            <div class="pm-ev-side">
+              <div class="pm-ev-idx mono">EV ${ev.idx}</div>
+              <h3 class="reveal">${evTitle}</h3>
+              <div class="pm-ev-meta mono reveal">${tf(ev,'meta')}</div>
+            </div>
+            <div class="pm-ev-main reveal">
+              <p>${tf(ev,'desc')}</p>
+              <div class="pm-tags">${tags}</div>
+            </div>
+          </div>
+          <div class="pm-grid">${items}</div>
+        </div>
+      </section>`;
     }).join('');
 
-    return `<section class="plate pm-event">
-      <div class="wrap">
-        <div class="pm-ev-head">
-          <div class="pm-ev-side">
-            <div class="pm-ev-idx mono">EV ${ev.idx}</div>
-            <h3 class="reveal">${ev.title}</h3>
-            <div class="pm-ev-meta mono reveal">${ev.meta}</div>
-          </div>
-          <div class="pm-ev-main reveal">
-            <p>${ev.desc}</p>
-            <div class="pm-tags">${ev.tags.map(t => `<span>${t}</span>`).join('')}</div>
-          </div>
-        </div>
-        <div class="pm-grid">${items}</div>
-      </div>
-    </section>`;
-  }).join('');
+    document.getElementById('pm-skills').innerHTML = PROMOTER_SKILLS.map((s, i) => `
+      <div class="pm-skill reveal">
+        <div class="pm-skill-n mono">${String(i + 1).padStart(2, '0')}</div>
+        <div class="pm-skill-t">${tf(s,'t')}</div>
+        <p class="pm-skill-d">${tf(s,'d')}</p>
+      </div>`).join('');
 
-  document.getElementById('pm-skills').innerHTML = PROMOTER_SKILLS.map((s, i) => `
-    <div class="pm-skill reveal">
-      <div class="pm-skill-n mono">${String(i + 1).padStart(2, '0')}</div>
-      <div class="pm-skill-t">${s.t}</div>
-      <p class="pm-skill-d">${s.d}</p>
-    </div>`).join('');
+    bindPromoterThumbs();
+  }
 
-  /* ---- Xem ảnh phóng to ---- */
-  (function initPromoterLightbox(){
-    const box = document.getElementById('lightbox');
-    const img = document.getElementById('lbImg');
-    const cnt = document.getElementById('lbCounter');
-    let i = 0;
+  /* ---- Xem ảnh phóng to ----
+     Bấm ảnh: gắn trực tiếp lên từng thẻ, nên phải gắn lại sau mỗi lần dựng lại
+     nội dung (đổi ngôn ngữ). Các nút và phím tắt chỉ gắn một lần duy nhất. */
+  const lbBox = document.getElementById('lightbox');
+  const lbImgEl = document.getElementById('lbImg');
+  const lbCnt = document.getElementById('lbCounter');
+  let lbI = 0;
 
-    const show = () => {
-      img.src = PM_ALL[i];
-      cnt.textContent = `${i + 1} / ${PM_ALL.length}`;
-    };
-    const open = (n) => {
-      i = n; show();
-      box.classList.add('open');
-      // Trả lại con trỏ hệ thống + khoá cuộn nền khi đang xem ảnh lớn
-      document.documentElement.classList.add('lb-open');
-      document.body.style.overflow = 'hidden';
-    };
-    const close = () => {
-      box.classList.remove('open');
-      document.documentElement.classList.remove('lb-open');
-      document.body.style.overflow = '';
-    };
-    const step = (d) => { i = (i + d + PM_ALL.length) % PM_ALL.length; show(); };
+  const lbShow = () => {
+    lbImgEl.src = PM_ALL[lbI];
+    lbCnt.textContent = `${lbI + 1} / ${PM_ALL.length}`;
+  };
+  const lbOpen = (n) => {
+    lbI = n; lbShow();
+    lbBox.classList.add('open');
+    // Trả lại con trỏ hệ thống + khoá cuộn nền khi đang xem ảnh lớn
+    document.documentElement.classList.add('lb-open');
+    document.body.style.overflow = 'hidden';
+  };
+  const lbClose = () => {
+    lbBox.classList.remove('open');
+    document.documentElement.classList.remove('lb-open');
+    document.body.style.overflow = '';
+  };
+  const lbStep = (d) => { lbI = (lbI + d + PM_ALL.length) % PM_ALL.length; lbShow(); };
 
+  function bindPromoterThumbs(){
     document.querySelectorAll('.pm-item[data-lb]').forEach(el => {
-      el.addEventListener('click', () => open(parseInt(el.dataset.lb, 10)));
+      el.addEventListener('click', () => lbOpen(parseInt(el.dataset.lb, 10)));
     });
-    document.getElementById('lbClose').addEventListener('click', close);
-    document.getElementById('lbPrev').addEventListener('click', () => step(-1));
-    document.getElementById('lbNext').addEventListener('click', () => step(1));
-    box.addEventListener('click', (e) => { if(e.target === box) close(); });
-    document.addEventListener('keydown', (e) => {
-      if(!box.classList.contains('open')) return;
-      if(e.key === 'Escape') close();
-      if(e.key === 'ArrowLeft') step(-1);
-      if(e.key === 'ArrowRight') step(1);
-    });
-  })();
+  }
+
+  document.getElementById('lbClose').addEventListener('click', lbClose);
+  document.getElementById('lbPrev').addEventListener('click', () => lbStep(-1));
+  document.getElementById('lbNext').addEventListener('click', () => lbStep(1));
+  lbBox.addEventListener('click', (e) => { if(e.target === lbBox) lbClose(); });
+  document.addEventListener('keydown', (e) => {
+    if(!lbBox.classList.contains('open')) return;
+    if(e.key === 'Escape') lbClose();
+    if(e.key === 'ArrowLeft') lbStep(-1);
+    if(e.key === 'ArrowRight') lbStep(1);
+  });
+
+  renderPromoter();
 }
+
+/* Đổi ngôn ngữ -> dựng lại mọi nội dung sinh bằng JS, rồi báo cho home.js
+   quét lại .reveal (phần tử cũ đã bị thay, phần tử mới chưa có hiệu ứng). */
+document.addEventListener('langchange', () => {
+  renderTiles();
+  if(typeof renderPromoter === 'function') renderPromoter();
+  document.dispatchEvent(new CustomEvent('contentrerender'));
+});
 </script>
 
 <script src="assets/js/common.js"></script>

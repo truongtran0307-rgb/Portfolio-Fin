@@ -8,6 +8,55 @@
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fineCursor   = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
+/* ============ CÔNG TẮC SÁNG/TỐI + NGÔN NGỮ ============
+   Cả hai lựa chọn được nhớ trong localStorage nên lần sau vào lại vẫn đúng ý
+   người xem. Mặc định là NỀN TỐI + TIẾNG ANH — đó là diện mạo gốc của trang,
+   cố ý không dò theo cài đặt máy để mọi khách lạ đều thấy đúng bản thiết kế.
+
+   Chủ đề được đặt sớm ngay trong <head> (xem thẻ script nội tuyến ở đó) để
+   trang không loé lên nền tối một nhịp rồi mới chuyển sang sáng. */
+
+function currentTheme(){
+  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+}
+
+function setTheme(theme){
+  const t = theme === 'light' ? 'light' : 'dark';
+  if(t === 'light') document.documentElement.dataset.theme = 'light';
+  else delete document.documentElement.dataset.theme;
+  try{ localStorage.setItem('theme', t); }catch(e){}
+  syncThemeLabel();
+  // Cho canvas theo dõi (và bất cứ thứ gì vẽ bằng JS) biết mà đọc lại màu
+  document.dispatchEvent(new CustomEvent('themechange', { detail:{ theme:t } }));
+}
+
+/** Nút ghi chế độ mà bấm vào SẼ chuyển sang, không phải chế độ đang dùng —
+ *  đang tối thì nút ghi "SÁNG". Phải chạy lại sau mỗi lần đổi ngôn ngữ, vì
+ *  applyLang() vẽ lại chữ trong nút theo khoá cũ. */
+function syncThemeLabel(){
+  const lbl = document.querySelector('#swTheme .sw-txt');
+  if(!lbl) return;
+  lbl.dataset.i18n = currentTheme() === 'light' ? 'ui.theme.toDark' : 'ui.theme.toLight';
+  if(typeof t === 'function') lbl.innerHTML = t(lbl.dataset.i18n);
+}
+
+/** Gắn sự kiện cho hai nút. Gọi SAU khi i18n.js đã nạp. */
+function initSwitches(){
+  if(typeof applyLang === 'function') applyLang();   // áp ngôn ngữ đã lưu
+  setTheme(currentTheme());                          // đồng bộ nhãn + phát sự kiện
+
+  const themeBtn = document.getElementById('swTheme');
+  if(themeBtn) themeBtn.addEventListener('click', () => {
+    setTheme(currentTheme() === 'light' ? 'dark' : 'light');
+  });
+
+  const langBtn = document.getElementById('swLang');
+  if(langBtn && typeof applyLang === 'function') langBtn.addEventListener('click', () => {
+    applyLang(LANG === 'en' ? 'vi' : 'en');
+    syncThemeLabel();   // applyLang vừa ghi đè nhãn nút, đặt lại cho đúng
+  });
+}
+
 /** Điều hướng có hiệu ứng crossfade (View Transitions API) nếu trình duyệt hỗ trợ.
  *  Dùng cho thay đổi NỘI DUNG TRONG CÙNG MỘT TRANG (vd: đổi dự án ở project.html).
  *  Việc chuyển sang trang html khác do @view-transition trong base.css lo,

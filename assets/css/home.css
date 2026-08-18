@@ -74,7 +74,7 @@
 /* Vệt sáng quét chéo chậm qua panel — thay cho tilt theo chuột */
 .hero-panel::after{
   content:""; position:absolute; inset:-40%; pointer-events:none;
-  background:linear-gradient(105deg, transparent 42%, rgba(255,255,255,.55) 50%, transparent 58%);
+  background:linear-gradient(105deg, transparent 42%, var(--sheen) 50%, transparent 58%);
   animation:heroSheen 7s ease-in-out infinite;
 }
 @keyframes heroSheen{
@@ -226,7 +226,7 @@
 .tile-img img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:grayscale(30%) contrast(1.05) brightness(.96); transition:filter .5s ease, transform .6s cubic-bezier(.16,.8,.24,1); opacity:0; animation:imgIn .6s ease forwards; }
 @keyframes imgIn{ to{ opacity:1; } }
 .tile:hover .tile-img img{ filter:grayscale(0%) contrast(1.05) brightness(1); transform:scale(1.06); }
-.tile-img::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,.85) 100%); }
+.tile-img::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,.85) 100%);  /* scrim trên ẢNH — cố ý giữ tối ở cả 2 chủ đề */ }
 
 /* ---- LỆCH MÀU KHI RÊ CHUỘT ------------------------------------------------
    Hai bản sao của ảnh, mỗi bản bị bộ lọc SVG lọc chỉ còn một dải màu (đỏ /
@@ -273,7 +273,7 @@
 .tile-tick::after{ width:1px; height:9px; }
 .tile-tick.tl{ top:8px; left:8px; }
 .tile-tick.br{ bottom:8px; right:8px; }
-.tile-num{ position:absolute; left:10px; bottom:9px; z-index:2; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.05em; color:var(--off); }
+.tile-num{ position:absolute; left:10px; bottom:9px; z-index:2; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.05em; color:var(--on-media); }
 .tile-kind{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--acid); margin-bottom:8px; transition:color .4s ease; }
 .tile:hover .tile-kind{ color:var(--paper); opacity:.7; }
 .tile-title{ font-size:19px; font-weight:800; line-height:1.2; text-transform:uppercase; }
@@ -501,8 +501,8 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
 .pm-item figcaption{
   position:absolute; left:0; right:0; bottom:0;
   display:flex; justify-content:space-between; gap:12px;
-  padding:10px 13px; font-size:9.5px; letter-spacing:.1em; color:var(--off);
-  background:linear-gradient(to top, rgba(10,10,10,.86), transparent);
+  padding:10px 13px; font-size:9.5px; letter-spacing:.1em; color:var(--on-media);
+  background:linear-gradient(to top, var(--scrim), transparent);
   opacity:0; transform:translateY(6px); transition:all .35s ease;
 }
 .pm-item:hover figcaption{ opacity:1; transform:translateY(0); }

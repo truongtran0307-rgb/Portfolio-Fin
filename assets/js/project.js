@@ -72,21 +72,24 @@ function initReveal(){
 
 function renderInner(i){
   const p = PROJECTS[i];
-  document.title = p.title + ' — Quang Truong';
-  document.getElementById('p-tag').textContent = p.plate;
+  // tf() lấy trường _vi khi đang ở tiếng Việt, không có thì rơi về bản tiếng Anh
+  document.title = tf(p,'title') + ' — Quang Truong';
+  document.getElementById('p-tag').textContent = tf(p,'plate');
   const titleEl = document.getElementById('p-title');
-  titleEl.textContent = p.title;
+  titleEl.textContent = tf(p,'title');
   titleEl.dataset.split = '';   // cho phép splitChars chạy lại ở dự án kế tiếp
-  document.getElementById('p-sub').textContent = p.sub;
-  document.getElementById('p-desc').innerHTML = p.desc;
+  document.getElementById('p-sub').textContent = tf(p,'sub');
+  document.getElementById('p-desc').innerHTML = tf(p,'desc');
 
   document.getElementById('p-meta').innerHTML = `
-    <div class="meta-row"><div class="k">Category</div><div class="v">${p.kind}</div></div>
-    <div class="meta-row"><div class="k">Year</div><div class="v">${p.year}</div></div>
-    <div class="meta-row"><div class="k">Role</div><div class="v">${p.role}</div></div>
-    <div class="meta-row"><div class="k">Index</div><div class="v">${p.reel}</div></div>
+    <div class="meta-row"><div class="k">${t('proj.category')}</div><div class="v">${tf(p,'kind')}</div></div>
+    <div class="meta-row"><div class="k">${t('proj.year')}</div><div class="v">${p.year}</div></div>
+    <div class="meta-row"><div class="k">${t('proj.role')}</div><div class="v">${tf(p,'role')}</div></div>
+    <div class="meta-row"><div class="k">${t('proj.index')}</div><div class="v">${p.reel}</div></div>
   `;
-  document.getElementById('p-tools').innerHTML = p.tools.map(t=>`<span>${t}</span>`).join('');
+  // Đặt tên biến là `tool`, KHÔNG phải `t` — `t` là hàm dịch, đặt trùng sẽ che
+  // mất nó trong phạm vi hàm mũi tên này.
+  document.getElementById('p-tools').innerHTML = p.tools.map(tool=>`<span>${tool}</span>`).join('');
 
   currentGallery = p.gallery.filter(src => !isVideo(src));
   const gal = document.getElementById('p-gallery');
@@ -108,15 +111,15 @@ function renderInner(i){
     const cls  = d ? ' ' + ratioClass(d[0], d[1]) : '';
     const dim  = d ? ` width="${d[0]}" height="${d[1]}"` : '';
     const done = d ? ' data-sized="1"' : '';
-    return `<div class="g-item${cls}" data-lb="${imgIdx}"${done}><img src="${src}"${dim} loading="lazy" decoding="async" alt="${p.title} ${gi+1}"><div class="g-cap"><span>FIG. ${fig}</span><span>${kind}</span></div></div>`;
+    return `<div class="g-item${cls}" data-lb="${imgIdx}"${done}><img src="${src}"${dim} loading="lazy" decoding="async" alt="${tf(p,'title')} ${gi+1}"><div class="g-cap"><span>FIG. ${fig}</span><span>${kind}</span></div></div>`;
   }).join('');
   applyGalleryLayout();
 
   const strip = document.getElementById('proj-strip');
   strip.innerHTML = PROJECTS.map((pp,pi)=>`
     <a class="strip-tile${pi===i?' active':''}" href="project.html?p=${pp.slug}">
-      <img src="${pp.gallery[0]}" alt="${pp.title}">
-      <div class="st-t">${pp.title}</div>
+      <img src="${pp.gallery[0]}" alt="${tf(pp,'title')}">
+      <div class="st-t">${tf(pp,'title')}</div>
     </a>`).join('');
 
   const prevI = (i - 1 + PROJECTS.length) % PROJECTS.length;
@@ -138,7 +141,11 @@ render(idx);
 
 initProgressBar();
 initCustomCursor('a, button, .g-item, .strip-tile');
+initSwitches();       // công tắc sáng/tối + ngôn ngữ
 initSmoothScroll();   // cuộn quán tính; tự bỏ qua trên điện thoại / máy giảm chuyển động
+
+// Đổi ngôn ngữ -> dựng lại nội dung dự án đang mở
+document.addEventListener('langchange', () => renderInner(idx));
 
 // ---- lightbox ----
 const lightbox = document.getElementById('lightbox');

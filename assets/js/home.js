@@ -25,8 +25,17 @@ function updateClock(){
 updateClock(); setInterval(updateClock, 15000);
 
 // ---- reveal-on-scroll (+ plate corner pop + counter) ----
-const revealEls = Array.from(document.querySelectorAll('.reveal'));
-const plateEls = Array.from(document.querySelectorAll('.plate'));
+// KHÔNG dùng const cứng: đổi ngôn ngữ sẽ thay mới toàn bộ thẻ dự án và khối
+// Promoter, những phần tử trong danh sách cũ lúc đó đã bị gỡ khỏi trang.
+let revealEls = Array.from(document.querySelectorAll('.reveal'));
+let plateEls = Array.from(document.querySelectorAll('.plate'));
+
+function refreshRevealTargets(){
+  revealEls = Array.from(document.querySelectorAll('.reveal'));
+  plateEls = Array.from(document.querySelectorAll('.plate'));
+  checkReveal();
+}
+document.addEventListener('contentrerender', refreshRevealTargets);
 
 function animateCount(el){
   if(el.dataset.done) return;
@@ -133,19 +142,23 @@ kineticOnView('.contact-inner h2', 60);
 // ---- custom cursor ----
 initCustomCursor('a, .tile, button, .bracket');
 
-// ---- bấm bất kỳ đâu trên thẻ -> sang trang chi tiết dự án ----
-document.querySelectorAll('.tile').forEach(tile=>{
+/* ---- bấm bất kỳ đâu trên thẻ -> sang trang chi tiết dự án ----
+   Uỷ quyền cho document thay vì gắn lên từng thẻ: đổi ngôn ngữ sẽ dựng lại
+   toàn bộ thẻ, thẻ mới vẫn hoạt động mà không phải gắn lại gì. */
+document.addEventListener('click', (e)=>{
+  const tile = e.target.closest('.tile');
+  if(!tile) return;
+  if(e.target.closest('.tile-cta')) return;   // link đã tự lo phần của nó
   const cta = tile.querySelector('.tile-cta');
-  if(!cta) return;
-  tile.addEventListener('click', (e)=>{
-    if(e.target.closest('.tile-cta')) return;
-    const href = cta.getAttribute('href');
-    if(!href) return;
-    // Chuyển trang thẳng. KHÔNG bọc trong startViewTransition — trang bị huỷ
-    // trước khi hiệu ứng kịp chạy nên chỉ tổ thêm độ trễ.
-    window.location.href = href;
-  });
+  const href = cta && cta.getAttribute('href');
+  if(!href) return;
+  // Chuyển trang thẳng. KHÔNG bọc trong startViewTransition — trang bị huỷ
+  // trước khi hiệu ứng kịp chạy nên chỉ tổ thêm độ trễ.
+  window.location.href = href;
 });
+
+// ---- công tắc sáng/tối + ngôn ngữ ----
+initSwitches();
 
 // ---- màn chờ + cuộn quán tính ----
 initPreloader();
@@ -158,7 +171,15 @@ function initTracking(){
   const canvas = document.getElementById('trackCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const TRACK_COLOR = '63,198,214';
+  // Đọc màu từ biến CSS thay vì ghi cứng, để lúc đổi sáng/tối lớp này đổi theo.
+  // Đọc lại mỗi khung hình thì tốn; đọc lại khi có sự kiện đổi chủ đề là đủ.
+  let TRACK_COLOR = '63,198,214';
+  const readTrackColor = () => {
+    const v = getComputedStyle(document.documentElement).getPropertyValue('--track-rgb').trim();
+    if(v) TRACK_COLOR = v;
+  };
+  readTrackColor();
+  document.addEventListener('themechange', readTrackColor);
 
   function syncCanvasSize(){
     const w = document.documentElement.scrollWidth;

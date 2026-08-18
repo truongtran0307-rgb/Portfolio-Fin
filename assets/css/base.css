@@ -4,6 +4,7 @@
     view-transition). Nạp file này TRƯỚC home.css / project.css.
    ============================================================ */
 
+/* Nền tối — mặc định. Đây là diện mạo gốc của trang. */
 :root{
   --paper:#0A0A0A;
   --paper-2:#141414;
@@ -13,6 +14,40 @@
   --line: rgba(242,239,228,0.16);
   --line-strong: rgba(242,239,228,0.32);
   --muted: rgba(242,239,228,0.55);
+  --track-rgb: 63,198,214;   /* màu lớp canvas theo dõi, JS đọc biến này */
+  --grain-blend: normal;
+  --grain-opacity: .05;
+
+  /* Chữ nằm ĐÈ LÊN ảnh (nhãn góc ảnh, chú thích, nút xem ảnh lớn). Ảnh thì
+     vẫn là ảnh dù trang đang nền sáng hay tối, nên lớp chữ này phải sáng cố
+     định — dùng var(--off) thì sang chế độ sáng nó hoá đen trên nền ảnh tối
+     và biến mất. Vì vậy hai biến dưới đây KHÔNG đảo theo chủ đề. */
+  --on-media:#F2EFE4;
+  --on-media-dim: rgba(242,239,228,0.62);
+  --on-media-line: rgba(242,239,228,0.34);
+  --scrim: rgba(10,10,10,0.86);
+  --sheen: rgba(255,255,255,.55);
+}
+
+/* Nền sáng.
+   Xanh axit #D7F53A đặt trên nền kem thì gần như không đọc được, nên đổi sang
+   một sắc ô-liu đậm cùng họ màu — vẫn nhận ra là "màu của trang" nhưng đủ
+   tương phản để làm chữ. Các biến còn lại chỉ là đảo sáng/tối. */
+html[data-theme="light"]{
+  --paper:#F4F1E8;
+  --paper-2:#E8E4D6;
+  --off:#15150F;
+  --acid:#55700A;
+  --teal:#18707E;
+  --line: rgba(21,21,15,0.18);
+  --line-strong: rgba(21,21,15,0.38);
+  --muted: rgba(21,21,15,0.62);
+  --track-rgb: 24,112,126;
+  /* Hạt nhiễu vốn là nhiễu trắng: trên nền sáng phải nhân xuống mới thấy */
+  --grain-blend: multiply;
+  --grain-opacity: .09;
+  /* Vệt sáng quét qua panel: nền sáng thì phải quét bằng bóng tối mới thấy */
+  --sheen: rgba(21,21,15,.16);
 }
 
 *{ margin:0; padding:0; box-sizing:border-box; }
@@ -29,12 +64,41 @@ a{ color:inherit; text-decoration:none; }
 .mono{ font-family:'JetBrains Mono', monospace; }
 .grot{ font-family:'Space Grotesk', sans-serif; }
 
+/* ============ CÔNG TẮC SÁNG/TỐI + NGÔN NGỮ ============
+   Đặt ở góc phải thanh đầu trang, dùng chung cho index.html và project.html. */
+.topbar-right{ display:flex; align-items:center; gap:18px; }
+.switches{ display:flex; gap:6px; }
+.sw{
+  appearance:none; background:none; cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid var(--line-strong); color:var(--muted);
+  font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.08em;
+  padding:6px 10px; transition:color .25s ease, border-color .25s ease, background .25s ease;
+}
+.sw:hover{ color:var(--acid); border-color:var(--acid); }
+.sw:focus-visible{ outline:2px solid var(--acid); outline-offset:2px; }
+
+/* Ô vuông nhỏ đặc/rỗng — ám chỉ trạng thái sáng/tối mà không cần icon rời */
+.sw-ico{
+  width:9px; height:9px; border:1px solid currentColor; border-radius:50%;
+  background:linear-gradient(90deg, currentColor 0 50%, transparent 50% 100%);
+}
+html[data-theme="light"] .sw-ico{ background:linear-gradient(90deg, transparent 0 50%, currentColor 50% 100%); }
+
+@media (max-width:820px){
+  .topbar-right{ gap:10px; }
+  .sw{ padding:5px 8px; font-size:9.5px; }
+  .sw-txt{ display:none; }        /* chật chỗ thì chỉ còn dấu hiệu, bỏ chữ */
+  #swLang .sw-txt{ display:inline; }
+}
+
 /* ============ SCROLL PROGRESS BAR ============ */
 .progress{ position:fixed; top:0; left:0; height:2px; background:var(--acid); z-index:90; width:0%; }
 
 /* ============ FILM GRAIN OVERLAY (texture 2026) ============ */
 .grain{
-  position:fixed; inset:-50%; z-index:78; pointer-events:none; opacity:.05;
+  position:fixed; inset:-50%; z-index:78; pointer-events:none;
+  opacity:var(--grain-opacity); mix-blend-mode:var(--grain-blend);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   animation:grainShift 700ms steps(3) infinite;
 }
@@ -152,14 +216,14 @@ html.lb-open a, html.lb-open button{ cursor:pointer !important; }
 .lightbox.open img{ transform:scale(1); }
 .lb-close, .lb-prev, .lb-next{
   position:fixed; font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:.05em;
-  color:var(--off); border:1px solid var(--line-strong); background:rgba(10,10,10,.7);
+  color:var(--on-media); border:1px solid var(--on-media-line); background:rgba(10,10,10,.7);
   padding:10px 16px; cursor:pointer; transition:all .25s ease; z-index:121;
 }
 .lb-close:hover, .lb-prev:hover, .lb-next:hover{ color:var(--acid); border-color:var(--acid); }
 .lb-close{ top:22px; right:22px; }
 .lb-prev{ left:22px; top:50%; transform:translateY(-50%); }
 .lb-next{ right:22px; top:50%; transform:translateY(-50%); }
-.lb-counter{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); letter-spacing:.05em; z-index:121; }
+.lb-counter{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--on-media-dim); letter-spacing:.05em; z-index:121; }
 @media (max-width:700px){ .lb-prev,.lb-next{ padding:8px 12px; } .lightbox{ padding:16px; } }
 
 /* ============ BRACKET HOVER ============ */

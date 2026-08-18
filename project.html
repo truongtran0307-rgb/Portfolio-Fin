@@ -9,6 +9,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/base.css">
+<!-- Đặt chủ đề + ngôn ngữ NGAY tại <head>, trước khi trang kịp vẽ.
+     Nếu đợi tới lúc JS cuối trang chạy, người chọn nền sáng sẽ thấy trang
+     loé đen một nhịp rồi mới trắng ra. -->
+<script>
+  try{
+    if(localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+    var _l = localStorage.getItem('lang');
+    if(_l === 'vi' || _l === 'en') document.documentElement.lang = _l;
+  }catch(e){}
+</script>
+
 <link rel="stylesheet" href="assets/css/project.css">
 
 <!-- Google Analytics (gtag.js) — đếm lượt truy cập, xem báo cáo tại analytics.google.com -->
@@ -38,11 +49,21 @@
 <div class="cursor-dot" id="cursorDot"></div>
 
 <div class="topbar">
-  <a class="back" href="index.html#work">Back to home</a>
+  <a class="back" href="index.html#work" data-i18n="nav.back">Back to home</a>
   <div class="brand grot">QUANG TRUONG</div>
-  <div class="nav-arrows mono">
-    <a id="prevBtn" href="#">← Prev</a>
-    <a id="nextBtn" href="#">Next →</a>
+  <div class="topbar-right">
+    <div class="nav-arrows mono">
+      <a id="prevBtn" href="#" data-i18n="nav.prev">← Prev</a>
+      <a id="nextBtn" href="#" data-i18n="nav.next">Next →</a>
+    </div>
+    <div class="switches">
+      <button class="sw mono" id="swTheme" type="button" data-i18n-attr="title:ui.theme.title" title="Switch to light mode">
+        <span class="sw-ico" aria-hidden="true"></span><span class="sw-txt" data-i18n="ui.theme.toLight">LIGHT</span>
+      </button>
+      <button class="sw mono" id="swLang" type="button" data-i18n-attr="title:ui.lang.title" title="Chuyển sang tiếng Việt">
+        <span class="sw-txt" data-i18n="ui.lang">VI</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -58,14 +79,14 @@
 
     <div class="tools" id="p-tools"></div>
 
-    <a class="p-cta" id="p-cta" href="https://www.behance.net/gallery/254056325/Portfolio-2026" target="_blank">View on Behance</a>
+    <a class="p-cta" id="p-cta" href="https://www.behance.net/gallery/254056325/Portfolio-2026" target="_blank" data-i18n="nav.viewBehance">View on Behance</a>
   </div>
 
   <div class="panel-right" id="p-gallery"></div>
 </div>
 
 <div class="proj-strip">
-  <h3>All projects</h3>
+  <h3 data-i18n="nav.allProjects">All projects</h3>
   <div class="strip-row" id="proj-strip"></div>
 </div>
 
@@ -75,13 +96,14 @@
 </footer>
 
 <div class="lightbox" id="lightbox">
-  <button class="lb-close" id="lbClose" type="button">✕ CLOSE</button>
+  <button class="lb-close" id="lbClose" type="button" data-i18n="proj.close">✕ CLOSE</button>
   <button class="lb-prev" id="lbPrev" type="button">←</button>
   <button class="lb-next" id="lbNext" type="button">→</button>
   <img id="lbImg" src="" alt="">
   <div class="lb-counter mono" id="lbCounter"></div>
 </div>
 
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/projects-data.js"></script>
 <script src="assets/js/project.js"></script>
