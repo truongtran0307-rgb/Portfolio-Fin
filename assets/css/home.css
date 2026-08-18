@@ -400,6 +400,18 @@
 .contact-links a:hover{ color:var(--acid); }
 .contact-links a:hover::before{ transform:scaleX(1); }
 
+/* Nút tải CV: khối đặc, nghịch màu với nền axit của khối Contact — nổi hơn
+   hẳn ba nút liên hệ viền rỗng bên trên, vì đây là hành động chính mà nhà
+   tuyển dụng cần làm sau khi xem xong. */
+.cv-btn{
+  margin-top:22px; display:inline-flex; align-items:center; gap:9px;
+  font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:.03em;
+  background:var(--paper); color:var(--acid);
+  border:1px solid var(--paper); padding:14px 24px;
+  transition:transform .28s cubic-bezier(.16,.8,.24,1), background .28s ease, color .28s ease;
+}
+.cv-btn:hover{ transform:translateY(-2px); background:transparent; color:var(--paper); }
+
 /* QR: nhịp thở nhẹ + vòng lan toả */
 .contact-qr{ margin-top:44px; display:flex; justify-content:center; }
 .contact-qr img{ width:84px; height:84px; border:1px solid var(--paper); image-rendering:pixelated; position:relative; z-index:2; }

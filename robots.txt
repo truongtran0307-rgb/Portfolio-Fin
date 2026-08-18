@@ -1,0 +1,5 @@
+# Cho phép mọi công cụ tìm kiếm lập chỉ mục toàn bộ trang.
+User-agent: *
+Allow: /
+
+Sitemap: https://truongtran0307-rgb.github.io/Portfolio-Fin/sitemap.xml

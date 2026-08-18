@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Nền axit cắt góc trên-phải và dưới-trái: nhắc lại hình dáng panel hero.
+       Chữ T (Trường) dựng bằng path, nét dày — chữ Q có đuôi mảnh nên ở 16px
+       trông thành cái kính lúp, dễ nhầm là nút tìm kiếm. -->
+  <path d="M0 0 H48 V12 H64 V64 H16 V52 H0 Z" fill="#D7F53A"/>
+  <rect x="14" y="16" width="36" height="9" fill="#0A0A0A"/>
+  <rect x="27" y="16" width="10" height="33" fill="#0A0A0A"/>
+</svg>

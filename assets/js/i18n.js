@@ -132,6 +132,7 @@ const I18N = {
     /* --- contact --- */
     "contact.tag":         "05 / CONTACT",
     "contact.h":           "Thanks for<br>watching!",
+    "contact.cv":          "↓ Download CV (PDF)",
 
     /* --- promoter --- */
     "pm.tag":              "06 / PROMOTER",
@@ -251,6 +252,7 @@ const I18N = {
 
     "contact.tag":         "05 / LIÊN HỆ",
     "contact.h":           "Cảm ơn bạn<br>đã xem!",
+    "contact.cv":          "↓ Tải CV (PDF)",
 
     "pm.tag":              "06 / TUYỂN SINH",
     "pm.h":                "Công tác tuyển sinh tại FPT",
