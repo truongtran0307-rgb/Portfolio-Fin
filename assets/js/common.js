@@ -272,9 +272,21 @@ function decodeText(el, duration = 900, loopMs = 0){
     }
   }, 40);
 
-  // Lặp lại theo chu kỳ
+  /* Lặp lại theo chu kỳ.
+     Mỗi vòng giải mã ghi lại innerHTML 20-25 lần liên tiếp — khá tốn. Trước
+     đây nó chạy mãi kể cả khi tiêu đề đã cuộn khuất hoặc người xem sang tab
+     khác. Nay chỉ chạy khi tiêu đề còn trong tầm nhìn và tab đang mở. */
   if(loopMs > 0 && !el._decodeLoop){
-    el._decodeLoop = setInterval(() => decodeText(el, duration, 0), loopMs);
+    const tick = () => {
+      if(document.hidden || el._offscreen) return;
+      decodeText(el, duration, 0);
+    };
+    el._decodeLoop = setInterval(tick, loopMs);
+
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(([e]) => { el._offscreen = !e.isIntersecting; })
+        .observe(el);
+    }
   }
 }
 

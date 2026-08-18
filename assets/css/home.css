@@ -241,10 +241,13 @@
   pointer-events:none;
   transition:opacity .28s ease, transform .28s cubic-bezier(.16,.8,.24,1);
 }
-/* Viết kèm .tile để thắng độ ưu tiên của ".tile:hover .tile-img img" phía trên —
-   nếu không, lúc rê chuột bộ lọc grayscale sẽ ghi đè và mất hẳn hiệu ứng. */
-.tile .tile-ghost.g-r{ filter:url(#chR); }
-.tile .tile-ghost.g-c{ filter:url(#chC); }
+/* Bộ lọc SVG chỉ bật KHI RÊ CHUỘT. Trước đây áp thường trực cho cả 12 ảnh
+   bóng (dù đang opacity:0) — trình duyệt vẫn phải dựng vùng lọc cho từng cái,
+   tốn vô ích suốt thời gian trang mở.
+   Viết kèm .tile:hover để thắng độ ưu tiên của ".tile:hover .tile-img img"
+   phía trên — nếu không, bộ lọc grayscale sẽ ghi đè và mất hẳn hiệu ứng. */
+.tile:hover .tile-ghost.g-r{ filter:url(#chR); }
+.tile:hover .tile-ghost.g-c{ filter:url(#chC); }
 
 /* Vệt quét chạy dọc khung ảnh — nhịp còn lại của ngôn ngữ REC trên trang */
 .tile-scan{
@@ -424,7 +427,7 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
   appearance:none; background:none; border:none; cursor:pointer;
   display:flex; align-items:center; gap:10px;
   padding:16px 26px; border-right:1px solid var(--line);
-  color:var(--muted); transition:color .3s ease, background .3s ease; will-change:transform;
+  color:var(--muted); transition:color .3s ease, background .3s ease;
 }
 .tab-btn:first-child{ padding-left:0; }
 .tab-idx{ font-size:10.5px; letter-spacing:.05em; opacity:.6; }
@@ -527,7 +530,9 @@ footer{ padding:22px 64px; display:flex; justify-content:space-between; font-fam
 }
 
 /* ============ MOTION TRACKING (blob/point tracking overlay) ============ */
-#trackCanvas{ position:absolute; top:0; left:0; z-index:15; pointer-events:none; }
+/* fixed + chỉ to bằng khung nhìn. Trước đây absolute và to bằng cả trang:
+   canvas hàng chục triệu điểm ảnh, xoá lại toàn bộ mỗi khung hình. */
+#trackCanvas{ position:fixed; top:0; left:0; z-index:15; pointer-events:none; }
 @media (hover:none), (pointer:coarse){ #trackCanvas{ display:none !important; } }
 
 @media (prefers-reduced-motion: reduce){

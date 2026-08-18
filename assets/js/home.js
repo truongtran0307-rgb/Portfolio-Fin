@@ -3,17 +3,40 @@
    Cần nạp common.js TRƯỚC file này.
    ============================================================ */
 
-// ---- REC timecode ----
+/* ---- REC timecode ----
+   Bản cũ ghi lại chữ MỖI khung hình (60 lần/giây), mỗi lần ghi là một lượt
+   tính lại bố cục + vẽ lại thanh đầu trang. Nay chỉ ghi ~12 lần/giây — mắt
+   vẫn thấy số nhảy liên tục, nhưng công việc giảm 5 lần. Và dừng hẳn khi
+   thanh đầu trang cuộn khuất hoặc người xem chuyển sang tab khác. */
 const tcEl = document.getElementById('tc');
 const startTime = Date.now();
 function pad(n,l=2){ return String(n).padStart(l,'0'); }
-function tickClock(){
-  const el = Date.now() - startTime;
-  const h = Math.floor(el/3600000), m = Math.floor((el%3600000)/60000), s = Math.floor((el%60000)/1000), f = Math.floor((el%1000)/1000*30);
-  tcEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`;
+
+let tcVisible = true, tcRunning = false, tcLast = 0;
+function tickClock(now){
+  if(!tcVisible || document.hidden){ tcRunning = false; return; }
+  if(now - tcLast >= 80){
+    tcLast = now;
+    const el = Date.now() - startTime;
+    const h = Math.floor(el/3600000), m = Math.floor((el%3600000)/60000),
+          s = Math.floor((el%60000)/1000), f = Math.floor((el%1000)/1000*30);
+    tcEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`;
+  }
   requestAnimationFrame(tickClock);
 }
-tickClock();
+function startClock(){
+  if(tcRunning) return;
+  tcRunning = true; tcLast = 0;
+  requestAnimationFrame(tickClock);
+}
+if('IntersectionObserver' in window){
+  new IntersectionObserver(([e]) => {
+    tcVisible = e.isIntersecting;
+    if(tcVisible) startClock();
+  }).observe(document.querySelector('.topbar'));
+}
+document.addEventListener('visibilitychange', () => { if(!document.hidden) startClock(); });
+startClock();
 
 // ---- HCMC clock ----
 const clockEl = document.getElementById('clock');
@@ -171,6 +194,9 @@ function initTracking(){
   const canvas = document.getElementById('trackCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
+  // Máy chặn canvas (hoặc trình duyệt quá cũ) trả về null. Không thoát ở đây
+  // thì lệnh vẽ đầu tiên sẽ ném lỗi và làm hỏng cả phần JS chạy sau nó.
+  if(!ctx) return;
   // Đọc màu từ biến CSS thay vì ghi cứng, để lúc đổi sáng/tối lớp này đổi theo.
   // Đọc lại mỗi khung hình thì tốn; đọc lại khi có sự kiện đổi chủ đề là đủ.
   let TRACK_COLOR = '63,198,214';
@@ -181,11 +207,22 @@ function initTracking(){
   readTrackColor();
   document.addEventListener('themechange', readTrackColor);
 
+  /* Canvas chỉ to bằng KHUNG NHÌN, không bằng cả trang.
+     Bản cũ đặt canvas = scrollWidth × scrollHeight: trang dài hơn chục nghìn
+     pixel nên canvas lên tới hai chục triệu điểm ảnh, mà mỗi khung hình lại
+     clearRect toàn bộ chỗ đó — chỉ để vẽ 5 ô vuông nhỏ. Đó là nguyên nhân
+     chính làm trang giật. Nay canvas cố định theo màn hình, toạ độ điểm được
+     trừ đi độ cuộn khi vẽ.
+     Nhân với devicePixelRatio để nét trên màn Retina, nhưng chặn ở 2 —
+     màn 3x thì diện tích tăng 9 lần, không đáng cho vài đường kẻ. */
+  let dpr = 1;
   function syncCanvasSize(){
-    const w = document.documentElement.scrollWidth;
-    const h = document.documentElement.scrollHeight;
-    canvas.width = w; canvas.height = h;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth, h = window.innerHeight;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
     canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   const anchorDefs = [
@@ -216,13 +253,29 @@ function initTracking(){
     syncCanvasSize();
   }
 
+  let hadInk = false;   // khung trước có vẽ gì không -> khỏi xoá canvas đã trống
   function draw(t){
     if(points.length){
-      ctx.clearRect(0,0,canvas.width, canvas.height);
+      // Toạ độ điểm là toạ độ TRANG, canvas thì cố định theo màn hình -> trừ
+      // độ cuộn để quy về toạ độ khung nhìn.
+      const sx = window.scrollX, sy = window.scrollY;
+      const vw = window.innerWidth, vh = window.innerHeight;
       points.forEach(p=>{
-        p.x = p.ax + Math.sin(t/1500 + p.phase) * p.amp;
-        p.y = p.ay + Math.cos(t/1800 + p.phase) * p.amp * 0.7;
+        p.x = p.ax + Math.sin(t/1500 + p.phase) * p.amp - sx;
+        p.y = p.ay + Math.cos(t/1800 + p.phase) * p.amp * 0.7 - sy;
       });
+
+      // Không điểm nào lọt vào màn hình -> bỏ qua hẳn khung hình này.
+      // Phần lớn thời gian cuộn trang là rơi vào trường hợp này.
+      const M = 140;
+      const onScreen = points.some(p => p.x > -M && p.x < vw + M && p.y > -M && p.y < vh + M);
+      if(!onScreen){
+        if(hadInk){ ctx.clearRect(0, 0, vw, vh); hadInk = false; }
+        return;   // vòng lặp ở startDraw() lo việc gọi khung tiếp theo
+      }
+      ctx.clearRect(0, 0, vw, vh);
+      hadInk = true;
+
       const THRESH = 480;
       for(let i=0;i<points.length;i++){
         for(let j=i+1;j<points.length;j++){
@@ -261,13 +314,31 @@ function initTracking(){
         ctx.fillText(label, lx, ly);
       });
     }
-    requestAnimationFrame(draw);
+    // Không tự gọi khung tiếp theo ở đây — startDraw() giữ vòng lặp, nhờ vậy
+    // mới dừng được khi chuyển tab.
   }
 
   computeAnchors();
   window.addEventListener('resize', ()=> computeAnchors());
   window.addEventListener('load', ()=> computeAnchors());
   trackingHandle = { computeAnchors };
-  requestAnimationFrame(draw);
+
+  /* Sang tab khác thì dừng hẳn vòng vẽ. Trình duyệt có tự giảm nhịp
+     requestAnimationFrame ở tab nền, nhưng dừng hẳn thì chắc chắn hơn —
+     và quan trọng hơn là đỡ hao pin trên máy xách tay. */
+  let running = false;
+  function startDraw(){
+    if(running || document.hidden) return;
+    running = true;
+    (function loop(t){
+      if(document.hidden){ running = false; return; }
+      draw(t);
+      requestAnimationFrame(loop);
+    })(performance.now());
+  }
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden) running = false; else startDraw();
+  });
+  startDraw();
 }
 initTracking();

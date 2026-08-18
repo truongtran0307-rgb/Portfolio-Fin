@@ -96,8 +96,11 @@ html[data-theme="light"] .sw-ico{ background:linear-gradient(90deg, transparent 
 .progress{ position:fixed; top:0; left:0; height:2px; background:var(--acid); z-index:90; width:0%; }
 
 /* ============ FILM GRAIN OVERLAY (texture 2026) ============ */
+/* inset:-8% chứ không phải -50%: hoạt ảnh chỉ dịch tối đa 3% nên thừa ra 8%
+   mỗi phía là quá đủ. Bản cũ phủ gấp 4 lần diện tích màn hình, tức là mỗi
+   nhịp hoạt ảnh phải ghép lại gấp 4 lần số điểm ảnh cần thiết. */
 .grain{
-  position:fixed; inset:-50%; z-index:78; pointer-events:none;
+  position:fixed; inset:-8%; z-index:78; pointer-events:none;
   opacity:var(--grain-opacity); mix-blend-mode:var(--grain-blend);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   animation:grainShift 700ms steps(3) infinite;
